@@ -340,7 +340,7 @@ NSArray *myGoalPoints;
     
     test = [[NSArray alloc] initWithObjects:@"Run a Marathon", @"Win a Bike Race", @"Eat 400 Peas", nil];
     myDates = [[NSArray alloc] initWithObjects:@"Dec 31, 2014", @"June 31 2013", @"Sept 30, 2014", nil];
-    myGoalPoints = [[NSArray alloc] initWithObjects:@"201pts", @"106pts", @"504pts", nil];
+    myGoalPoints = [[NSArray alloc] initWithObjects:@"201pts", @"106pts", @"504pts",@"201pts", @"106pts", @"504pts",@"201pts", @"106pts", @"504pts", nil];
     myImageURLs = [[NSArray alloc] initWithObjects:@"http://arizonafoothillsmagazine.com/fitness/wp-content/uploads/2012/11/running-motivation-50x50.jpg",@"http://cdn5.droidmill.com/media/market-media/speed.game.app009.bike.racing_icon.png",@"http://ffxiv.gamerescape.com/w/images/thumb/7/79/Jade_Peas_Icon.png/50px-Jade_Peas_Icon.png", nil];
     
     
@@ -399,7 +399,7 @@ NSArray *myGoalPoints;
 #pragma mark - UITableViewDataSource methods and related helpers
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 3;//[myGoals count];
+    return [myGoals count];
 }
 
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -408,6 +408,9 @@ NSArray *myGoalPoints;
     Cell_GoalCell *cell = [tableView dequeueReusableCellWithIdentifier:@"goalCell" forIndexPath:indexPath];
     
     // Here we use the new provided setImageWithURL: method to load the web image
+    NSLog(@"%@", myGoals);
+       // NSLog([[myGoals objectAtIndex:1] objectForKey:@"description"]);
+    
     cell.goalTitle.text = [[myGoals objectAtIndex:indexPath.row] objectForKey:@"description"];
     cell.goalDate.text = [[myGoals objectAtIndex:indexPath.row] objectForKey:@"target"];
     cell.goalPoints.text = myGoalPoints[indexPath.row];

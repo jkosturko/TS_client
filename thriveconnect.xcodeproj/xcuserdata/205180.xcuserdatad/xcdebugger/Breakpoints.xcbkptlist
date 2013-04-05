@@ -58,11 +58,24 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "SCViewController.m"
-         timestampString = "384728079.682513"
+         timestampString = "386442506.823548"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "413"
-         endingLineNumber = "413"
+         startingLineNumber = "414"
+         endingLineNumber = "414"
+         landmarkName = "-tableView:cellForRowAtIndexPath:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "SCViewController.m"
+         timestampString = "386442506.823548"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "412"
+         endingLineNumber = "412"
          landmarkName = "-tableView:cellForRowAtIndexPath:"
          landmarkType = "5">
       </FileBreakpoint>
