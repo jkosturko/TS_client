@@ -15,6 +15,8 @@
  */
 
 #define _GETURL @"http://ts.spielly.com/users/1/goals.json"
+//#define _GETURL @"http://tsdev.spielly.com/users/1/goals.json"
+
 
 #import "SCViewController.h"
 #import "SCAppDelegate.h"
@@ -302,11 +304,7 @@ NSArray *myGoalPoints;
 }
 
 - (void)viewDidLoad {
-    NSLog(@"ViewDidLoad");
     [super viewDidLoad];
-    
-
-
 
     // Get the CLLocationManager going.
     self.locationManager = [[CLLocationManager alloc] init];
@@ -340,7 +338,7 @@ NSArray *myGoalPoints;
     
     test = [[NSArray alloc] initWithObjects:@"Run a Marathon", @"Win a Bike Race", @"Eat 400 Peas", nil];
     myDates = [[NSArray alloc] initWithObjects:@"Dec 31, 2014", @"June 31 2013", @"Sept 30, 2014", nil];
-    myGoalPoints = [[NSArray alloc] initWithObjects:@"201pts", @"106pts", @"504pts",@"201pts", @"106pts", @"504pts",@"201pts", @"106pts", @"504pts", nil];
+    myGoalPoints = [[NSArray alloc] initWithObjects:@"201pts", @"106pts", @"504pts",@"201pts", @"106pts", @"504pts",@"201pts", @"106pts", @"504pts",@"201pts", @"106pts", @"504pts",@"201pts", @"201pts", @"106pts", @"504pts",@"201pts",@"201pts", @"106pts", @"504pts",@"201pts", nil];
     myImageURLs = [[NSArray alloc] initWithObjects:@"http://arizonafoothillsmagazine.com/fitness/wp-content/uploads/2012/11/running-motivation-50x50.jpg",@"http://cdn5.droidmill.com/media/market-media/speed.game.app009.bike.racing_icon.png",@"http://ffxiv.gamerescape.com/w/images/thumb/7/79/Jade_Peas_Icon.png/50px-Jade_Peas_Icon.png", nil];
     
     
@@ -408,7 +406,6 @@ NSArray *myGoalPoints;
     Cell_GoalCell *cell = [tableView dequeueReusableCellWithIdentifier:@"goalCell" forIndexPath:indexPath];
     
     // Here we use the new provided setImageWithURL: method to load the web image
-    NSLog(@"%@", myGoals);
        // NSLog([[myGoals objectAtIndex:1] objectForKey:@"description"]);
     
     cell.goalTitle.text = [[myGoals objectAtIndex:indexPath.row] objectForKey:@"description"];
@@ -770,8 +767,6 @@ NSArray *myGoalPoints;
                                                       fieldsForRequest:nil];
 }
 
-#pragma mark - ThriveStream
-
 #pragma mark - Get Data from JSON
 - (NSArray *)getGoals {
     NSString *myURL = [[NSString stringWithFormat:@"%@?", _GETURL] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
@@ -782,10 +777,18 @@ NSArray *myGoalPoints;
         dataArray = [NSJSONSerialization JSONObjectWithData:jsonFeed options:kNilOptions error:nil];
     }
     
-    NSArray* reversedArray = [[dataArray reverseObjectEnumerator] allObjects];
-    return reversedArray;
+    return [self mapDataModel:dataArray];
 }
 
+//Using different property names incase data model changes : mapping
+- (NSArray *)mapDataModel:(NSArray *)dataJsonArrayFromAPI {
+    
+    //Remove once data is reversed
+    NSArray* reversedArray = [[dataJsonArrayFromAPI reverseObjectEnumerator] allObjects];
+    NSArray *goalsArray = [[NSArray alloc] initWithArray:reversedArray];
 
+    /*TODO Map Data*/
+    return goalsArray;
+}
 
 @end

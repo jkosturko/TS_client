@@ -8,12 +8,15 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ViewController_SingleGoalView : UIViewController
-
+@interface ViewController_SingleGoalView : UIViewController{
+    NSArray *mySubGoals;
+}
 @property (strong, nonatomic) id detailItem;
+- (IBAction)didSwipeGoalTable:(id)sender;
 
+- (IBAction)didSwipe:(id)sender;
 
+@property (strong, nonatomic) IBOutlet UITableView *tableViewSubGoals;
 @property (weak, nonatomic) IBOutlet UILabel *goalDate;
-
 @property (weak, nonatomic) IBOutlet UILabel *detailDescriptionLabel;
 @end

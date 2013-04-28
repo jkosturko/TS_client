@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4C834D8717230BB600BCF9BE /* ViewController_CreateSubGoal.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C834D8617230BB600BCF9BE /* ViewController_CreateSubGoal.m */; };
 		5FC5402116DFF34B00BE1AF9 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FC5402016DFF34B00BE1AF9 /* UIKit.framework */; };
 		5FC5402316DFF34B00BE1AF9 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FC5402216DFF34B00BE1AF9 /* Foundation.framework */; };
 		5FC5402516DFF34B00BE1AF9 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FC5402416DFF34B00BE1AF9 /* CoreGraphics.framework */; };
@@ -49,7 +50,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		5FC5401D16DFF34B00BE1AF9 /* thriveconnect.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = thriveconnect.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		4C834D8517230BB600BCF9BE /* ViewController_CreateSubGoal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ViewController_CreateSubGoal.h; path = ../ViewController_CreateSubGoal.h; sourceTree = "<group>"; };
+		4C834D8617230BB600BCF9BE /* ViewController_CreateSubGoal.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ViewController_CreateSubGoal.m; path = ../ViewController_CreateSubGoal.m; sourceTree = "<group>"; };
+		5FC5401D16DFF34B00BE1AF9 /* thriveconnect.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = thriveconnect.app; path = "/Users/jessica/Apps/thrivestreams/thrivestreams_client/build/Release-iphoneos/thriveconnect.app"; sourceTree = "<absolute>"; };
 		5FC5402016DFF34B00BE1AF9 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		5FC5402216DFF34B00BE1AF9 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		5FC5402416DFF34B00BE1AF9 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -127,6 +130,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4C834D841723052900BCF9BE /* Create SubGoal */ = {
+			isa = PBXGroup;
+			children = (
+				4C834D8517230BB600BCF9BE /* ViewController_CreateSubGoal.h */,
+				4C834D8617230BB600BCF9BE /* ViewController_CreateSubGoal.m */,
+			);
+			name = "Create SubGoal";
+			sourceTree = "<group>";
+		};
 		5FC5401416DFF34B00BE1AF9 = {
 			isa = PBXGroup;
 			children = (
@@ -140,17 +152,8 @@
 				5FC5406816E039D500BE1AF9 /* images */,
 				5FC5406716E039C900BE1AF9 /* Facebook */,
 				5FC5401F16DFF34B00BE1AF9 /* Frameworks */,
-				5FC5401E16DFF34B00BE1AF9 /* Products */,
 				5FDD116116EE908900F49B9C /* thirdparty */,
 			);
-			sourceTree = "<group>";
-		};
-		5FC5401E16DFF34B00BE1AF9 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				5FC5401D16DFF34B00BE1AF9 /* thriveconnect.app */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 		5FC5401F16DFF34B00BE1AF9 /* Frameworks */ = {
@@ -175,8 +178,9 @@
 		5FC5402616DFF34B00BE1AF9 /* thriveconnect */ = {
 			isa = PBXGroup;
 			children = (
-				5FDD115616EE5DFA00F49B9C /* Goal Screen Single */,
+				4C834D841723052900BCF9BE /* Create SubGoal */,
 				5FC541A816E2B21D00BE1AF9 /* Login */,
+				5FDD115616EE5DFA00F49B9C /* Goal Screen Single */,
 				5FC541A716E2B20400BE1AF9 /* Create Goal */,
 				5FC5402716DFF34B00BE1AF9 /* Supporting Files */,
 			);
@@ -330,7 +334,7 @@
 				en,
 			);
 			mainGroup = 5FC5401416DFF34B00BE1AF9;
-			productRefGroup = 5FC5401E16DFF34B00BE1AF9 /* Products */;
+			productRefGroup = 5FC5401416DFF34B00BE1AF9;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
@@ -382,6 +386,7 @@
 				5FC5715E16E4063B00FFE654 /* ViewController_SignIn.m in Sources */,
 				5FDD114216EE532C00F49B9C /* ViewController_SingleGoalView.m in Sources */,
 				5FDD115516EE5CCF00F49B9C /* Cell_GoalDetail.m in Sources */,
+				4C834D8717230BB600BCF9BE /* ViewController_CreateSubGoal.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -460,6 +465,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
+				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
@@ -476,6 +482,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "thriveconnect/thriveconnect-Prefix.pch";
 				INFOPLIST_FILE = "thriveconnect/thriveconnect-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				OTHER_LDFLAGS = (
 					"-lsqlite3.0",
 					"-ObjC",
@@ -495,6 +502,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "thriveconnect/thriveconnect-Prefix.pch";
 				INFOPLIST_FILE = "thriveconnect/thriveconnect-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				OTHER_LDFLAGS = (
 					"-lsqlite3.0",
 					"-ObjC",

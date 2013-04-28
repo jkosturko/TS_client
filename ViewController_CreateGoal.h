@@ -12,6 +12,10 @@
     NSMutableDictionary *myNewGoal;
 }
 
+
+- (IBAction)deleteGoal:(UIButton *)sender;
+@property (strong, nonatomic) IBOutlet UIButton *deleteGoalBtn;
+
 - (IBAction)saveGoal;
 
 - (IBAction)cancelButton:(UIBarButtonItem *)sender;
@@ -22,5 +26,5 @@
 @property (weak, nonatomic) IBOutlet UITextField *goalType;
 @property (weak, nonatomic) IBOutlet UIButton *goalImage;
 @property (weak, nonatomic) IBOutlet UISwitch *goalPrivacy;
-
+@property (strong, nonatomic) id detailItem;
 @end

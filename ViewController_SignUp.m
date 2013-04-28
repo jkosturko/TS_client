@@ -106,7 +106,6 @@
     else {
         //Report Database Errors
         //NSLog(@"%@", [[reply valueForKey:@"username"] objectAtIndex:0]);
-        NSLog(@"%@", reply);
     }
 }
 

@@ -9,9 +9,9 @@
 #import <UIKit/UIKit.h>
 
 @interface Cell_GoalDetail : UITableViewCell
-@property (weak, nonatomic) IBOutlet UIView *viewContainer;
+@property (strong, nonatomic) IBOutlet UIView *viewContainer;
 
-@property (weak, nonatomic) IBOutlet UITextView *activityText;
-@property (weak, nonatomic) IBOutlet UITextView *activityName;
+@property (strong, nonatomic) IBOutlet UITextView *activityText;
+@property (strong, nonatomic) IBOutlet UITextView *activityName;
 @property (weak, nonatomic) IBOutlet UIImageView *GoalBorderImage;
 @end
