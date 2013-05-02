@@ -11,6 +11,8 @@
 @interface Cell_GoalDetail : UITableViewCell
 @property (strong, nonatomic) IBOutlet UIView *viewContainer;
 @property (strong, nonatomic) IBOutlet UILabel *labelGoalId;
+@property (strong, nonatomic) IBOutlet UIButton *buttonRemoveTableRow;
+- (IBAction)pressedButtonRemoveSubGoal:(UIButton *)sender;
 
 @property (weak, nonatomic) IBOutlet UILabel *mySubGoalTitle;
 @property (strong, nonatomic) IBOutlet UITextView *activityText;

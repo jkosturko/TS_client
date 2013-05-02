@@ -151,6 +151,9 @@
             swipedCell.mySubGoalTitle.attributedText = [self updateStrikeThrough:swipedCell.mySubGoalTitle.text add:NO];
             [self updateCompleteGoalStatus:swipedCell.labelGoalId.text completed:NO];
         }
+    
+    //This isn't the right time to call this I will likely test if swipe is slow and then delete, if swipe is fast, do code above
+    [self showRemoveRowButton:swipedCell];
     }
 }
 
@@ -208,6 +211,19 @@
     }
     
     return [DateFormatter stringFromDate:date];
+}
+
+-(void)showRemoveRowButton:(Cell_GoalDetail *)swipedCell {
+
+    swipedCell.buttonRemoveTableRow.hidden = NO;
+    [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(hideButton:) userInfo:swipedCell.buttonRemoveTableRow repeats:NO];
+    //[self performSelector:@selector(hideButton:) withObject:swipedCell.buttonRemoveTableRow userafterDelay:2.0];
+}
+
+-(void)hideButton:(NSTimer *)timer {
+    NSLog(@"%@", timer.userInfo);
+    UIButton *button = timer.userInfo;
+    button.hidden = YES;
 }
 
 @end

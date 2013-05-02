@@ -115,7 +115,7 @@
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
                                     </textField>
-                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Email Address" clearsOnBeginEditing="YES" minimumFontSize="17" background="Default.png" disabledBackground="E490C0AD-F898-437E-BAEE-D507E709BF32" translatesAutoresizingMaskIntoConstraints="NO" id="XXd-ov-JrH">
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Email Address" clearsOnBeginEditing="YES" minimumFontSize="17" background="Default.png" disabledBackground="A5FAB2C5-1ECE-4E1E-8D13-4C1A31FE783B" translatesAutoresizingMaskIntoConstraints="NO" id="XXd-ov-JrH">
                                         <constraints>
                                             <constraint firstAttribute="width" constant="230" id="gU3-0u-bEs"/>
                                         </constraints>
@@ -369,14 +369,34 @@
                                                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
+                                                        <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hdy-QJ-qDd">
+                                                            <constraints>
+                                                                <constraint firstAttribute="height" constant="26" id="U8x-8t-hlP"/>
+                                                                <constraint firstAttribute="width" constant="64" id="gMW-ub-g03"/>
+                                                            </constraints>
+                                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                                            <state key="normal" title="Remove">
+                                                                <color key="titleColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                                            </state>
+                                                            <state key="highlighted">
+                                                                <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                            </state>
+                                                            <connections>
+                                                                <action selector="pressedButtonRemoveSubGoal:" destination="CS9-1k-ZTI" eventType="touchUpInside" id="pZt-Pf-kXq"/>
+                                                            </connections>
+                                                        </button>
                                                     </subviews>
                                                     <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                     <gestureRecognizers/>
                                                     <constraints>
-                                                        <constraint firstItem="mu0-al-kUd" firstAttribute="top" secondItem="cAJ-6M-1LZ" secondAttribute="top" type="default" id="4S6-NG-cCl"/>
-                                                        <constraint firstItem="Cra-d2-Neo" firstAttribute="centerY" secondItem="cAJ-6M-1LZ" secondAttribute="centerY" type="default" id="G3E-mY-S4T"/>
+                                                        <constraint firstItem="hdy-QJ-qDd" firstAttribute="bottom" secondItem="cAJ-6M-1LZ" secondAttribute="bottom" type="default" id="9zZ-jB-2H6"/>
+                                                        <constraint firstItem="hdy-QJ-qDd" firstAttribute="trailing" secondItem="cAJ-6M-1LZ" secondAttribute="trailing" type="default" id="CoC-20-prC"/>
+                                                        <constraint firstItem="hdy-QJ-qDd" firstAttribute="baseline" secondItem="mu0-al-kUd" secondAttribute="baseline" type="default" id="JqV-on-L2O"/>
+                                                        <constraint firstItem="mu0-al-kUd" firstAttribute="leading" secondItem="cAJ-6M-1LZ" secondAttribute="leading" constant="255" id="KeD-rg-OPX"/>
+                                                        <constraint firstItem="Cra-d2-Neo" firstAttribute="centerY" secondItem="cAJ-6M-1LZ" secondAttribute="centerY" type="default" id="QJQ-pZ-u8Q"/>
                                                         <constraint firstItem="Cra-d2-Neo" firstAttribute="leading" secondItem="cAJ-6M-1LZ" secondAttribute="leading" type="default" id="WTh-5s-5mi"/>
-                                                        <constraint firstAttribute="trailing" secondItem="mu0-al-kUd" secondAttribute="trailing" constant="20" symbolic="YES" type="default" id="tFY-21-tbw"/>
+                                                        <constraint firstItem="Cra-d2-Neo" firstAttribute="centerY" secondItem="mu0-al-kUd" secondAttribute="centerY" type="default" id="fYS-FQ-FcN"/>
                                                     </constraints>
                                                 </view>
                                             </subviews>
@@ -385,11 +405,12 @@
                                         <gestureRecognizers/>
                                         <constraints>
                                             <constraint firstItem="cAJ-6M-1LZ" firstAttribute="top" secondItem="CS9-1k-ZTI" secondAttribute="top" constant="10" id="W3j-hS-wbB"/>
-                                            <constraint firstAttribute="trailing" secondItem="cAJ-6M-1LZ" secondAttribute="trailing" constant="46" id="hwv-Yz-vxz"/>
+                                            <constraint firstAttribute="trailing" secondItem="cAJ-6M-1LZ" secondAttribute="trailing" constant="46" id="ar2-Rh-ybh"/>
                                             <constraint firstAttribute="bottom" secondItem="cAJ-6M-1LZ" secondAttribute="bottom" constant="12" id="ncr-TK-cja"/>
                                             <constraint firstItem="cAJ-6M-1LZ" firstAttribute="leading" secondItem="CS9-1k-ZTI" secondAttribute="leading" constant="20" type="default" id="qHI-GK-qyV"/>
                                         </constraints>
                                         <connections>
+                                            <outlet property="buttonRemoveTableRow" destination="hdy-QJ-qDd" id="fyl-a4-ncJ"/>
                                             <outlet property="labelGoalId" destination="mu0-al-kUd" id="efE-zD-K5Q"/>
                                             <outlet property="mySubGoalTitle" destination="Cra-d2-Neo" id="NrM-x7-XmN"/>
                                             <outlet property="viewContainer" destination="cAJ-6M-1LZ" id="jBe-XO-q4w"/>
@@ -846,9 +867,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="Default-568h@2x.png" width="640" height="1136"/>
-        <image name="Default.png" width="320" height="480"/>
-        <image name="E490C0AD-F898-437E-BAEE-D507E709BF32" width="640" height="960">
+        <image name="A5FAB2C5-1ECE-4E1E-8D13-4C1A31FE783B" width="640" height="960">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGPj9YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK4HCBMU
 GR4fIyQsLzI4O1UkbnVsbNUJCgsMDQ4PEBESVk5TU2l6ZVYkY2xhc3NcTlNJbWFnZUZsYWdzVk5TUmVw
@@ -1217,6 +1236,8 @@ TABXAF4AZQByAHkAgQCDAIUAigCMAI4AmQCeAKkAqwCtAK8AtAC3ALkAuwC9AL8AxADbAN0A31PnU+xT
 AAIBAAAAAAAAAEIAAAAAAAAAAAAAAAAAAFTHA
 </mutableData>
         </image>
+        <image name="Default-568h@2x.png" width="640" height="1136"/>
+        <image name="Default.png" width="320" height="480"/>
         <image name="TS_Login_01_LOGO_iso.png" width="453" height="51"/>
         <image name="temp_grey_btn.png" width="130" height="45"/>
         <image name="tmp_imagePlaceholder.png" width="240" height="128"/>
@@ -1236,9 +1257,11 @@ AAIBAAAAAAAAAEIAAAAAAAAAAAAAAAAAAFTHA
         <class className="Cell_GoalDetail" superclassName="UITableViewCell">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/Cell_GoalDetail.h"/>
             <relationships>
+                <relationship kind="action" name="pressedButtonRemoveSubGoal:" candidateClass="UIButton"/>
                 <relationship kind="outlet" name="GoalBorderImage" candidateClass="UIImageView"/>
                 <relationship kind="outlet" name="activityName" candidateClass="UITextView"/>
                 <relationship kind="outlet" name="activityText" candidateClass="UITextView"/>
+                <relationship kind="outlet" name="buttonRemoveTableRow" candidateClass="UIButton"/>
                 <relationship kind="outlet" name="labelGoalId" candidateClass="UILabel"/>
                 <relationship kind="outlet" name="mySubGoalTitle" candidateClass="UILabel"/>
                 <relationship kind="outlet" name="viewContainer" candidateClass="UIView"/>

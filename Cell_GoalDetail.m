@@ -34,4 +34,6 @@
     _viewContainer.layer.borderWidth = 1.0f;
     _viewContainer.layer.cornerRadius = 3;
 }
+- (IBAction)pressedButtonRemoveSubGoal:(UIButton *)sender {
+}
 @end
