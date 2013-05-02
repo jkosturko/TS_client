@@ -10,6 +10,7 @@
 #define _GETURL @"http://ts.spielly.com/goals/1/goals.json"
 //#define _GETURL @"http://tsdev.spielly.com/goals/1/goals.json"
 #define _TAGGOALTITLE 10
+#define _PUTURL @"http://ts.spielly.com/"
 
 #import "ViewController_SingleGoalView.h"
 #import "Cell_GoalDetail.h"
@@ -68,13 +69,23 @@
 
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    NSLog(@"%@", [[mySubGoals objectAtIndex:indexPath.row] objectForKey:@"completion"]);
     Cell_GoalDetail *cell = [tableView dequeueReusableCellWithIdentifier:@"cellDetail" forIndexPath:indexPath];
     
-    NSLog(@"tablevie %@", tableView);
-    
+
+    //Strikethrough title if complete
+    if ([[mySubGoals objectAtIndex:indexPath.row] objectForKey:@"completion"] != [NSNull null]) {
+        cell.mySubGoalTitle.attributedText =  [self updateStrikeThrough:[[mySubGoals objectAtIndex:indexPath.row] objectForKey:@"description"] add:YES];
+    }
+    else {
+        cell.mySubGoalTitle.text = [[mySubGoals objectAtIndex:indexPath.row] objectForKey:@"description"];
+    }
     // Here we use the new provided setImageWithURL: method to load the web image
-    cell.activityText.text = [[mySubGoals objectAtIndex:indexPath.row] objectForKey:@"description"];
     cell.activityName.text = [[mySubGoals objectAtIndex:indexPath.row] objectForKey:@"description"];
+    cell.labelGoalId.text = [NSString stringWithFormat:@"%@",[[mySubGoals objectAtIndex:indexPath.row] objectForKey:@"id"] ];
+    
+
+
     
     return cell;
 }
@@ -124,34 +135,79 @@
 
 }
 
-- (IBAction)didSwipeGoalTable:(id)sender {
-    NSLog(@"%@", @"swipe1");
+- (IBAction)didSwipeGoalTable:(UISwipeGestureRecognizer *)sender {
+    
     if (sender.state == UIGestureRecognizerStateEnded) {
-        CGPoint swipelocation = [sender locationInView:self.tableViewSubGoals];
-        NSIndexPath *swipedIndexPath = [self.tableViewSubGoals indexPathForRowAtPoint:swipelocation];
-        //UITableViewCell *swipedCell = [self.tableViewSubGoals cellForRowAtIndexPath:swipedIndexPath];
+        CGPoint swipeLocation = [sender locationInView:self.tableViewSubGoals];
+        NSIndexPath *swipedIndexPath = [self.tableViewSubGoals indexPathForRowAtPoint:swipeLocation];
+        Cell_GoalDetail *swipedCell = [self.tableViewSubGoals cellForRowAtIndexPath:swipedIndexPath];
         
-        Cell_GoalDetail *swipedCell = [sender dequeueReusableCellWithIdentifier:@"cellDetail" forIndexPath:swipedIndexPath];
-        
-//        NSLog(@"%@", sender.view.subviews);
-        
-        NSMutableAttributedString *attributeString = [[NSMutableAttributedString alloc] init];
-        [attributeString addAttribute:NSStrikethroughStyleAttributeName value:swipedCell.activityName.text range:(NSRange){0,[attributeString length]}];
-
-   
-        //swipedCell.viewContainer [NSString stringWithFormat:@"%@", attributeString];
-        
-//                    NSLog(@"test %@",[swipedCell.viewContainer viewWithTag:_TAGGOALTITLE]);
-        //NSLog(@"%@", swipedCell.viewContainer );
-        
-//        Cell_GoalDetail *cell = [self.tableViewSubGoals dequeueReusableCellWithIdentifier:@"cellDetail" forIndexPath:0];
-        
-        
-
-        
+        if (sender.direction == 1){
+            swipedCell.mySubGoalTitle.attributedText = [self updateStrikeThrough:swipedCell.mySubGoalTitle.text add:YES];
+            [self updateCompleteGoalStatus:swipedCell.labelGoalId.text completed:YES];
+            
+        }
+        else {
+            swipedCell.mySubGoalTitle.attributedText = [self updateStrikeThrough:swipedCell.mySubGoalTitle.text add:NO];
+            [self updateCompleteGoalStatus:swipedCell.labelGoalId.text completed:NO];
+        }
     }
 }
 
-- (IBAction)didSwipe:(id)sender {
+//When user swipes (completes task) -strikethrough
+-(NSMutableAttributedString *)updateStrikeThrough: (NSString *)text add:(Boolean)addStrikeThrough {
+    NSMutableAttributedString *attributeString = [[NSMutableAttributedString alloc] initWithString:text];    
+    if (addStrikeThrough) {
+        [attributeString addAttribute:NSStrikethroughStyleAttributeName
+                            value:[NSNumber numberWithInt:2]
+                            range:(NSRange){0,[attributeString length]}];
+    }
+    else {
+        [attributeString removeAttribute:NSStrikethroughStyleAttributeName
+                                   range:(NSRange){0,[attributeString length]}];
+    }
+    
+    return attributeString;
 }
+
+-(void)updateCompleteGoalStatus:(NSString *)goalId completed:(Boolean)completed {
+    //I think a lot of these lines can be cleaned...maybe ask Carlos
+    NSString *putURL = [NSString stringWithFormat:@"%@goals/%@.json", _PUTURL, goalId];
+    NSString *currentDate = [self formatDate:[self getCurrentDate] backend:YES];
+    NSString *completionDate = (completed)? currentDate: nil;
+    NSString *post = [NSString stringWithFormat:@"[goal]completion=%@", completionDate];
+    NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
+    NSString *postLength = [NSString stringWithFormat:@"%d", [postData length]];
+    
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
+    [request setURL:[NSURL URLWithString:putURL]];
+    [request setHTTPMethod:@"PUT"];
+    [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
+    [request setValue:@"application/x-www-form-urlencoded;charset=UTF-8" forHTTPHeaderField:@"Content-Type"];
+    [request setHTTPBody:postData];
+    
+    NSURLResponse *response;
+    NSData *POSTReply = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:nil];
+    NSString *theReply = [[NSString alloc] initWithBytes:[POSTReply bytes] length:[POSTReply length] encoding: NSASCIIStringEncoding];
+//        NSLog(@"Reply: %@", theReply);
+
+    
+}
+
+-(NSDate *)getCurrentDate {
+    return [NSDate date];
+}
+
+-(NSString *)formatDate:(NSDate *)date backend:(Boolean)backend {
+    NSDateFormatter *DateFormatter=[[NSDateFormatter alloc] init];
+
+    if (backend) {
+        [DateFormatter setDateFormat:@"yyyy-MM-dd"];
+    } else {
+        [DateFormatter setDateFormat:@"MM dd, yyyy"];
+    }
+    
+    return [DateFormatter stringFromDate:date];
+}
+
 @end

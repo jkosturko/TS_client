@@ -7,6 +7,7 @@
 //
 //#define _POSTURL @"http://tsdev.spielly.com/goals.json"
 #define _POSTURL @"http://ts.spielly.com/goals.json"
+#define _PUTURL @"http://ts.spielly.com/goals/1.json"
 #define _USERID 1
 
 
@@ -166,13 +167,14 @@
 - (void)updateGoal:(NSString *)goalName category:(NSString *)categoryName  {
     NSLog(@"Got to Add goal %@", goalName);
     
+    //?[goal]description=new
     NSString *post = [NSString stringWithFormat:@"[goal]description=%@&[goal]user_id=%d&[goal]category=%@&[goal]target=%@", goalName,_USERID, categoryName, @"2011-09-22"];
     NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
     NSString *postLength = [NSString stringWithFormat:@"%d", [postData length]];
     
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
-    [request setURL:[NSURL URLWithString:_POSTURL]];
-    [request setHTTPMethod:@"POST"];
+    [request setURL:[NSURL URLWithString:_PUTURL]];
+    [request setHTTPMethod:@"PUT"];
     [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
     [request setValue:@"application/x-www-form-urlencoded;charset=UTF-8" forHTTPHeaderField:@"Content-Type"];
     [request setHTTPBody:postData];
@@ -181,15 +183,6 @@
     NSData *POSTReply = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:nil];
     NSString *theReply = [[NSString alloc] initWithBytes:[POSTReply bytes] length:[POSTReply length] encoding: NSASCIIStringEncoding];
     //NSLog(@"Reply: %@", theReply);
-    
-//    NSString *strURL = @"http://tsdev.spielly.com/goals/1.json?[goal]description=new";
-//    NSURL *URL = [NSURL URLWithString:strURL];
-//    NSMutableURLRequest *urlRequest = [NSMutableURLRequest requestWithURL:URL];
-//    
-//    NSString *range = [NSString stringWithFormat:@"bytes=%lld-%lld",bytesUploaded,uploadSize];
-//    [urlRequest addValue:range forHTTPHeaderField:@"Range"];
-//    [urlRequest setHTTPMethod:@"PUT"];
-//    self.connection = [NSURLConnection connectionWithRequest:urlRequest delegate:self];
 }
 
 @end

@@ -12,9 +12,8 @@
     NSArray *mySubGoals;
 }
 @property (strong, nonatomic) id detailItem;
-- (IBAction)didSwipeGoalTable:(id)sender;
 
-- (IBAction)didSwipe:(id)sender;
+- (IBAction)didSwipeGoalTable:(UISwipeGestureRecognizer *)sender;
 
 @property (strong, nonatomic) IBOutlet UITableView *tableViewSubGoals;
 @property (weak, nonatomic) IBOutlet UILabel *goalDate;

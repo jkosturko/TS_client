@@ -115,7 +115,6 @@
         [datePickerFormat setDateFormat:@"yyyy-mm-dd"];
    
     NSString *datePickerStringToSave = [datePickerFormat stringFromDate:datePicker.date];
-    NSLog(@"%@", datePickerStringToSave);
     return datePickerStringToSave;
 }
 
