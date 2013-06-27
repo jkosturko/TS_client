@@ -155,6 +155,9 @@
     //This isn't the right time to call this I will likely test if swipe is slow and then delete, if swipe is fast, do code above
     [self showRemoveRowButton:swipedCell];
     }
+
+
+
 }
 
 //When user swipes (completes task) -strikethrough
@@ -216,14 +219,24 @@
 -(void)showRemoveRowButton:(Cell_GoalDetail *)swipedCell {
 
     swipedCell.buttonRemoveTableRow.hidden = NO;
-    [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(hideButton:) userInfo:swipedCell.buttonRemoveTableRow repeats:NO];
-    //[self performSelector:@selector(hideButton:) withObject:swipedCell.buttonRemoveTableRow userafterDelay:2.0];
+    [NSTimer scheduledTimerWithTimeInterval:4 target:self selector:@selector(hideButton:) userInfo:swipedCell.buttonRemoveTableRow repeats:NO];
+
 }
 
 -(void)hideButton:(NSTimer *)timer {
-    NSLog(@"%@", timer.userInfo);
     UIButton *button = timer.userInfo;
     button.hidden = YES;
 }
+
+- (IBAction)pressRemoveRowButton:(UIButton *)sender {
+    
+    //remove table row
+    
+}
+
+- (IBAction)didTapGoalTableView:(UITapGestureRecognizer *)sender {
+    NSLog(@"%@",@"test");
+}
+
 
 @end

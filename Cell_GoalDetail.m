@@ -36,4 +36,6 @@
 }
 - (IBAction)pressedButtonRemoveSubGoal:(UIButton *)sender {
 }
+- (IBAction)pressRemoveRowButton:(UIButton *)sender {
+}
 @end

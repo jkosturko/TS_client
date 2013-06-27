@@ -11,9 +11,12 @@
 @interface ViewController_SingleGoalView : UIViewController{
     NSArray *mySubGoals;
 }
+
 @property (strong, nonatomic) id detailItem;
 
 - (IBAction)didSwipeGoalTable:(UISwipeGestureRecognizer *)sender;
+- (IBAction)didTapGoalTableView:(UITapGestureRecognizer *)sender;
+
 
 @property (strong, nonatomic) IBOutlet UITableView *tableViewSubGoals;
 @property (weak, nonatomic) IBOutlet UILabel *goalDate;

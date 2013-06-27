@@ -54,7 +54,6 @@
     if (self.detailItem) {
         myNewGoal = [[NSMutableDictionary alloc] initWithDictionary:self.detailItem];
 //        myNewGoal = self.detailItem;
-                NSLog(@"Hey Edit Screen %@", self.detailItem);
         
         //if you pressed edit then
         self.goalName.text = [self.detailItem objectForKey:@"description"];
