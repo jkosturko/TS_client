@@ -13,10 +13,36 @@
 #import "ViewController_CreateSubGoal.h"
 
 @interface ViewController_CreateSubGoal ()
-
+- (void)configureView;
 @end
 
+NSString *parentId;
+
 @implementation ViewController_CreateSubGoal
+
+#pragma mark - Managing the detail item
+
+- (void)setDetailItem:(id)newDetailItem
+{
+    if (_detailItem != newDetailItem) {
+        _detailItem = newDetailItem;
+    
+        parentId = newDetailItem;
+        
+        // Update the view.
+        [self configureView];
+    }
+}
+
+- (void)configureView
+{
+    // Update the user interface for the detail item.
+    
+    if (self.detailItem) {
+//        self.detailDescriptionLabel.text = [self.detailItem valueForKey:@"description"];
+//        self.goalDate.text = [self.detailItem valueForKey:@"target"];
+    }
+}
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -47,8 +73,6 @@
     
     [myNewSubGoal setValue:_textFieldSubGoal.text forKey:@"name"];
     [myNewSubGoal setValue:_textFieldTargetDate.text forKey:@"date"];
-    
-    NSLog(@"%@", myNewSubGoal);
 
     [self updateModelwithNewGoal];
     [self dismissViewControllerAnimated:YES completion:nil];
@@ -64,12 +88,11 @@
 
 #pragma mark - Model - Post Data to JSON
 - (void)addSubGoal:(NSString *)goalName targetDate:(NSString *)targetDate {
-    int parentId =  1;
     int categoryId = 1;
 //    NSString *targetDate = @"2013-06-05";
     
     //http://ts.spielly.com/goals.json?[goal]description=SubGoal1&[goal]category=cat1&[goal]parent_id=1&[goal]user_id=1
-    NSString *post = [NSString stringWithFormat:@"[goal]description=%@&[goal]user_id=%d&[goal]category=%d&[goal]parent_id=%d&[goal]target=%@", goalName,_USERID, categoryId, parentId, targetDate];
+    NSString *post = [NSString stringWithFormat:@"[goal]description=%@&[goal]user_id=%d&[goal]category=%d&[goal]parent_id=%@&[goal]target=%@", goalName,_USERID, categoryId, parentId, targetDate];
     NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
     NSString *postLength = [NSString stringWithFormat:@"%d", [postData length]];
     

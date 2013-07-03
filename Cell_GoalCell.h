@@ -13,5 +13,6 @@
 @property (weak, nonatomic) IBOutlet UILabel *goalDate;
 @property (weak, nonatomic) IBOutlet UIImageView *goalImage;
 @property (weak, nonatomic) IBOutlet UILabel *goalPoints;
+@property (strong, nonatomic) IBOutlet UILabel *goalID;
 
 @end

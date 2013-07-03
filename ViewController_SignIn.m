@@ -49,7 +49,7 @@
         dataArray = [NSJSONSerialization JSONObjectWithData:jsonFeed options:kNilOptions error:nil];
     }
     
-    NSLog(@"%@", dataArray);
+//    NSLog(@"%@", dataArray);
     
     return dataArray;
 }

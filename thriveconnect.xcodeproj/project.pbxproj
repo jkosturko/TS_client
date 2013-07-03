@@ -8,6 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		4C834D8717230BB600BCF9BE /* ViewController_CreateSubGoal.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C834D8617230BB600BCF9BE /* ViewController_CreateSubGoal.m */; };
+		4CAEC32B1783B2490088367E /* results.png in Resources */ = {isa = PBXBuildFile; fileRef = 4CAEC32A1783B2490088367E /* results.png */; };
+		4CAEC32D1783B3900088367E /* actions.png in Resources */ = {isa = PBXBuildFile; fileRef = 4CAEC32C1783B38F0088367E /* actions.png */; };
+		4CAEC32F1783B44B0088367E /* goals.png in Resources */ = {isa = PBXBuildFile; fileRef = 4CAEC32E1783B44B0088367E /* goals.png */; };
+		4CAECC291783BA160088367E /* running-01-80x80.png in Resources */ = {isa = PBXBuildFile; fileRef = 4CAECC281783BA160088367E /* running-01-80x80.png */; };
+		4CAECC2B1783BC2D0088367E /* settings.png in Resources */ = {isa = PBXBuildFile; fileRef = 4CAECC2A1783BC2D0088367E /* settings.png */; };
 		5FC5402116DFF34B00BE1AF9 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FC5402016DFF34B00BE1AF9 /* UIKit.framework */; };
 		5FC5402316DFF34B00BE1AF9 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FC5402216DFF34B00BE1AF9 /* Foundation.framework */; };
 		5FC5402516DFF34B00BE1AF9 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FC5402416DFF34B00BE1AF9 /* CoreGraphics.framework */; };
@@ -52,7 +57,12 @@
 /* Begin PBXFileReference section */
 		4C834D8517230BB600BCF9BE /* ViewController_CreateSubGoal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ViewController_CreateSubGoal.h; path = ../ViewController_CreateSubGoal.h; sourceTree = "<group>"; };
 		4C834D8617230BB600BCF9BE /* ViewController_CreateSubGoal.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ViewController_CreateSubGoal.m; path = ../ViewController_CreateSubGoal.m; sourceTree = "<group>"; };
-		5FC5401D16DFF34B00BE1AF9 /* thriveconnect.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = thriveconnect.app; path = "/Users/jessica/Apps/thrivestreams/thrivestreams_client/build/Release-iphoneos/thriveconnect.app"; sourceTree = "<absolute>"; };
+		4CAEC329178392340088367E /* thriveconnect.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = thriveconnect.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		4CAEC32A1783B2490088367E /* results.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = results.png; sourceTree = "<group>"; };
+		4CAEC32C1783B38F0088367E /* actions.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = actions.png; sourceTree = "<group>"; };
+		4CAEC32E1783B44B0088367E /* goals.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = goals.png; sourceTree = "<group>"; };
+		4CAECC281783BA160088367E /* running-01-80x80.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "running-01-80x80.png"; sourceTree = "<group>"; };
+		4CAECC2A1783BC2D0088367E /* settings.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = settings.png; sourceTree = "<group>"; };
 		5FC5402016DFF34B00BE1AF9 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		5FC5402216DFF34B00BE1AF9 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		5FC5402416DFF34B00BE1AF9 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -153,6 +163,7 @@
 				5FC5406716E039C900BE1AF9 /* Facebook */,
 				5FC5401F16DFF34B00BE1AF9 /* Frameworks */,
 				5FDD116116EE908900F49B9C /* thirdparty */,
+				4CAEC329178392340088367E /* thriveconnect.app */,
 			);
 			sourceTree = "<group>";
 		};
@@ -211,6 +222,11 @@
 		5FC5406816E039D500BE1AF9 /* images */ = {
 			isa = PBXGroup;
 			children = (
+				4CAECC2A1783BC2D0088367E /* settings.png */,
+				4CAECC281783BA160088367E /* running-01-80x80.png */,
+				4CAEC32E1783B44B0088367E /* goals.png */,
+				4CAEC32C1783B38F0088367E /* actions.png */,
+				4CAEC32A1783B2490088367E /* results.png */,
 				5FDD115B16EE6A8700F49B9C /* tmp_safe_image.php.png */,
 				5FDD115716EE617200F49B9C /* tmp_GoalDetailBorder.png */,
 				5FDD115116EE569500F49B9C /* tmp_running.jpeg */,
@@ -314,7 +330,7 @@
 			);
 			name = thriveconnect;
 			productName = thriveconnect;
-			productReference = 5FC5401D16DFF34B00BE1AF9 /* thriveconnect.app */;
+			productReference = 4CAEC329178392340088367E /* thriveconnect.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -366,6 +382,11 @@
 				5FDD115816EE617200F49B9C /* tmp_GoalDetailBorder.png in Resources */,
 				5FDD115A16EE626B00F49B9C /* Screenshot_3_11_13_3_04_PM-2.png in Resources */,
 				5FDD115C16EE6A8700F49B9C /* tmp_safe_image.php.png in Resources */,
+				4CAEC32B1783B2490088367E /* results.png in Resources */,
+				4CAEC32D1783B3900088367E /* actions.png in Resources */,
+				4CAEC32F1783B44B0088367E /* goals.png in Resources */,
+				4CAECC291783BA160088367E /* running-01-80x80.png in Resources */,
+				4CAECC2B1783BC2D0088367E /* settings.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -478,6 +499,9 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)\"",
+					"\"$(SRCROOT)/Downloads\"",
+					"\"$(SRCROOT)/Downloads/thrivestreams_client-master\"",
+					"\"$(SRCROOT)/Downloads/thrivestreams_client-master 2\"",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "thriveconnect/thriveconnect-Prefix.pch";
@@ -498,6 +522,9 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)\"",
+					"\"$(SRCROOT)/Downloads\"",
+					"\"$(SRCROOT)/Downloads/thrivestreams_client-master\"",
+					"\"$(SRCROOT)/Downloads/thrivestreams_client-master 2\"",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "thriveconnect/thriveconnect-Prefix.pch";

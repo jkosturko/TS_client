@@ -68,9 +68,9 @@
 
     
 //Don't remember what this was for
-//    self.goalName.delegate = self;
-//    self.goalDate.delegate = self;
-//    self.goalType.delegate = self;
+    self.goalName.delegate = self;
+    self.goalDate.delegate = self;
+    self.goalType.delegate = self;
     
 
 

@@ -411,6 +411,8 @@ NSArray *myGoalPoints;
     cell.goalTitle.text = [[myGoals objectAtIndex:indexPath.row] objectForKey:@"description"];
     cell.goalDate.text = [[myGoals objectAtIndex:indexPath.row] objectForKey:@"target"];
     cell.goalPoints.text = myGoalPoints[indexPath.row];
+    cell.goalID.text = [NSString stringWithFormat:@"%@", [[myGoals objectAtIndex:indexPath.row] objectForKey:@"id"]] ;
+
 
     return cell;
 }

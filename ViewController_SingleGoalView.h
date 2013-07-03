@@ -12,11 +12,10 @@
     NSArray *mySubGoals;
 }
 
+- (IBAction)removeGoal:(UIButton *)sender;
 @property (strong, nonatomic) id detailItem;
 
 - (IBAction)didSwipeGoalTable:(UISwipeGestureRecognizer *)sender;
-- (IBAction)didTapGoalTableView:(UITapGestureRecognizer *)sender;
-
 
 @property (strong, nonatomic) IBOutlet UITableView *tableViewSubGoals;
 @property (weak, nonatomic) IBOutlet UILabel *goalDate;

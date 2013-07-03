@@ -15,8 +15,11 @@
 #import "ViewController_SingleGoalView.h"
 #import "Cell_GoalDetail.h"
 
-@interface ViewController_SingleGoalView ()
+@interface ViewController_SingleGoalView () {
+    NSString *goalId;
+}
 - (void)configureView;
+
 @end
 
 @implementation ViewController_SingleGoalView
@@ -28,10 +31,18 @@
 {
     if (_detailItem != newDetailItem) {
         _detailItem = newDetailItem;
+
+        [self setGoalID: _detailItem];
+        NSLog(@"%@", goalId);
+
         
         // Update the view.
         [self configureView];
     }
+}
+
+-(void)setGoalID:dataObj {
+    goalId = [NSString stringWithFormat:@"%@", [dataObj objectForKey:@"id"]];
 }
 
 - (void)configureView
@@ -51,6 +62,8 @@
     [self configureView];
     
     mySubGoals = [self getSubGoals];
+    
+ //   NSLog(@"%@",mySubGoals);
 
 }
 
@@ -69,7 +82,7 @@
 
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSLog(@"%@", [[mySubGoals objectAtIndex:indexPath.row] objectForKey:@"completion"]);
+//    NSLog(@"%@", [[mySubGoals objectAtIndex:indexPath.row] objectForKey:@"completion"]);
     Cell_GoalDetail *cell = [tableView dequeueReusableCellWithIdentifier:@"cellDetail" forIndexPath:indexPath];
     
 
@@ -84,8 +97,13 @@
     cell.activityName.text = [[mySubGoals objectAtIndex:indexPath.row] objectForKey:@"description"];
     cell.labelGoalId.text = [NSString stringWithFormat:@"%@",[[mySubGoals objectAtIndex:indexPath.row] objectForKey:@"id"] ];
     
-
-
+    
+    //Likely delete this..I was just trying to get a button to be clickable on the table cell
+//    UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(5, 5, 30, 20)];
+//    [button addTarget:self action:@selector(pressedRemoveButton) forControlEvents:UIControlEventTouchUpInside];
+//    [cell addSubview:button];
+//    button.backgroundColor = [UIColor yellowColor];
+//    
     
     return cell;
 }
@@ -95,7 +113,7 @@
 }
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    return NO;
+    return YES;
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
@@ -107,12 +125,18 @@
 //        NSDate *object = myGoals[indexPath.row];
         [[segue destinationViewController] setDetailItem:self.detailItem];
     }
+    
+    if ([[segue identifier] isEqualToString:@"newSubGoal"]) {
+//        NSIndexPath *indexPath = [self.goalTableView indexPathForSelectedRow];
+//        NSDate *object = myGoals[indexPath.row];
+        [[segue destinationViewController] setDetailItem:goalId];
+    }
 }
 
 
 #pragma mark - Get Data from JSON
 - (NSArray *)getSubGoals {
-    NSString *myURL = [[NSString stringWithFormat:@"%@?", _GETURL] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    NSString *myURL = [[NSString stringWithFormat:@"http://ts.spielly.com/goals/%@/goals.json?", goalId] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     NSData *jsonFeed = [NSData dataWithContentsOfURL:[NSURL URLWithString:myURL]];
     
     NSArray *dataArray = nil;
@@ -153,9 +177,9 @@
         }
     
     //This isn't the right time to call this I will likely test if swipe is slow and then delete, if swipe is fast, do code above
+        NSLog(@"%@", @"ShowRemoveButton");
     [self showRemoveRowButton:swipedCell];
     }
-
 
 
 }
@@ -217,9 +241,12 @@
 }
 
 -(void)showRemoveRowButton:(Cell_GoalDetail *)swipedCell {
+    NSLog(@"I'm deleting you!");
+    
+    [self deleteGoal];
 
-    swipedCell.buttonRemoveTableRow.hidden = NO;
-    [NSTimer scheduledTimerWithTimeInterval:4 target:self selector:@selector(hideButton:) userInfo:swipedCell.buttonRemoveTableRow repeats:NO];
+//    swipedCell.buttonRemoveTableRow.hidden = NO;
+//    [NSTimer scheduledTimerWithTimeInterval:4 target:self selector:@selector(hideButton:) userInfo:swipedCell.buttonRemoveTableRow repeats:NO];
 
 }
 
@@ -228,14 +255,32 @@
     button.hidden = YES;
 }
 
-- (IBAction)pressRemoveRowButton:(UIButton *)sender {
-    
-    //remove table row
-    
+-(IBAction)pressedRemoveButton {
+    NSLog(@"Hey you found me!");
 }
+- (void)deleteGoal {
+    
+//    //I think a lot of these lines can be cleaned...maybe ask Carlos
+//    NSString *putURL = [NSString stringWithFormat:@"%@goals/%@.json", _PUTURL, goalId];
+//    NSString *currentDate = [self formatDate:[self getCurrentDate] backend:YES];
+//    NSString *completionDate = (completed)? currentDate: nil;
+//    NSString *post = [NSString stringWithFormat:@"[goal]completion=%@", completionDate];
+//    NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
+//    NSString *postLength = [NSString stringWithFormat:@"%d", [postData length]];
+//    
+//    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
+//    [request setURL:[NSURL URLWithString:putURL]];
+//    [request setHTTPMethod:@"PUT"];
+//    [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
+//    [request setValue:@"application/x-www-form-urlencoded;charset=UTF-8" forHTTPHeaderField:@"Content-Type"];
+//    [request setHTTPBody:postData];
+//    
+//    NSURLResponse *response;
+//    NSData *POSTReply = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:nil];
+//    NSString *theReply = [[NSString alloc] initWithBytes:[POSTReply bytes] length:[POSTReply length] encoding: NSASCIIStringEncoding];
+//    //        NSLog(@"Reply: %@", theReply);
 
-- (IBAction)didTapGoalTableView:(UITapGestureRecognizer *)sender {
-    NSLog(@"%@",@"test");
+    
 }
 
 
