@@ -402,6 +402,7 @@ NSArray *myGoalPoints;
 
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    //adding comment
     
     Cell_GoalCell *cell = [tableView dequeueReusableCellWithIdentifier:@"goalCell" forIndexPath:indexPath];
     

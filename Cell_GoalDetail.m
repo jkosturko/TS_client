@@ -40,8 +40,6 @@
 - (IBAction)buttonDeleteGoal:(UIButton *)sender {
     UILabel *labelWithGoalId = (UILabel *)[[sender superview] viewWithTag:_GOALIDTAG];
     [self deleteGoalonServer:labelWithGoalId.text];
-
-
 }
 
 //I will set the deleted flag on the server to true
