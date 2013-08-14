@@ -273,7 +273,7 @@ NSArray *myGoalPoints;
              if (!error) {
                  self.userNameLabel.text = user.name;
                  self.userProfileImage.profileID = [user objectForKey:@"id"];
-                 self.title = user.name;
+                 //self.title = user.name;
              }
          }];
     }
@@ -409,7 +409,7 @@ NSArray *myGoalPoints;
     // Here we use the new provided setImageWithURL: method to load the web image
        // NSLog([[myGoals objectAtIndex:1] objectForKey:@"description"]);
     
-    cell.goalTitle.text = [[myGoals objectAtIndex:indexPath.row] objectForKey:@"description"];
+    cell.goalTitle.text = [[[myGoals objectAtIndex:indexPath.row] objectForKey:@"description"] capitalizedString];
     cell.goalDate.text = [[myGoals objectAtIndex:indexPath.row] objectForKey:@"target"];
     cell.goalPoints.text = myGoalPoints[indexPath.row];
     cell.goalID.text = [NSString stringWithFormat:@"%@", [[myGoals objectAtIndex:indexPath.row] objectForKey:@"id"]] ;
@@ -794,4 +794,15 @@ NSArray *myGoalPoints;
     return goalsArray;
 }
 
+
+- (NSString *)getPickerFormat:(UIDatePicker *)datePicker readable:(BOOL)isReadable {
+    NSDateFormatter *datePickerFormat = [[NSDateFormatter alloc] init];
+    if (isReadable)
+        [datePickerFormat setDateFormat:@"MMM dd, yyyy"];
+    else
+        [datePickerFormat setDateFormat:@"yyyy-mm-dd"];
+    
+    NSString *datePickerStringToSave = [datePickerFormat stringFromDate:datePicker.date];
+    return datePickerStringToSave;
+}
 @end

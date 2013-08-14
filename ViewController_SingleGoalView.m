@@ -33,7 +33,6 @@
         _detailItem = newDetailItem;
 
         [self setGoalID: _detailItem];
-        NSLog(@"%@", goalId);
 
         
         // Update the view.
@@ -52,6 +51,9 @@
     if (self.detailItem) {
         self.detailDescriptionLabel.text = [self.detailItem valueForKey:@"description"];
         self.goalDate.text = [self.detailItem valueForKey:@"target"];
+        self.navigationItem.title = [[self.detailItem valueForKey:@"description"] capitalizedString];
+
+
     }
 }
 
@@ -91,7 +93,7 @@
         cell.mySubGoalTitle.attributedText =  [self updateStrikeThrough:[[mySubGoals objectAtIndex:indexPath.row] objectForKey:@"description"] add:YES];
     }
     else {
-        cell.mySubGoalTitle.text = [[mySubGoals objectAtIndex:indexPath.row] objectForKey:@"description"];
+        cell.mySubGoalTitle.text = [[[mySubGoals objectAtIndex:indexPath.row] objectForKey:@"description"] capitalizedString];
     }
     // Here we use the new provided setImageWithURL: method to load the web image
     cell.activityName.text = [[mySubGoals objectAtIndex:indexPath.row] objectForKey:@"description"];
