@@ -106,7 +106,7 @@
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     // If row is deleted, remove it from the list.
     if (editingStyle == UITableViewCellEditingStyleDelete) {
-        [self deleteGoal]; //This shouldn't go here because I am mixing logic with data with view - temporary for now
+        [self deleteGoal:[[mySubGoals objectAtIndex:indexPath.row] objectForKey:@"id"]]; //This shouldn't go here because I am mixing logic with data with view - temporary for now
         [mySubGoals removeObjectAtIndex:indexPath.row];
         [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:YES];
     }
@@ -210,8 +210,6 @@
     NSData *POSTReply = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:nil];
     NSString *theReply = [[NSString alloc] initWithBytes:[POSTReply bytes] length:[POSTReply length] encoding: NSASCIIStringEncoding];
     // NSLog(@"Reply: %@", theReply);
-
-    
 }
 
 -(NSDate *)getCurrentDate {
@@ -231,19 +229,16 @@
     return [DateFormatter stringFromDate:date];
 }
 
-- (void)deleteGoal {
+- (void)deleteGoal:(NSString *)goalId {
     
     //I think a lot of these lines can be cleaned...maybe ask Carlos
     NSString *putURL = [NSString stringWithFormat:@"%@goals/%@.json", _PUTURL, goalId];
-    NSString *currentDate = [self formatDate:[self getCurrentDate] backend:YES];
-    NSString *completionDate = (completed)? currentDate: nil;
-    NSString *post = [NSString stringWithFormat:@"[goal]completion=%@", completionDate];
-    NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
+    NSData *postData = [putURL dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
     NSString *postLength = [NSString stringWithFormat:@"%d", [postData length]];
     
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
     [request setURL:[NSURL URLWithString:putURL]];
-    [request setHTTPMethod:@"PUT"];
+    [request setHTTPMethod:@"DELETE"];
     [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
     [request setValue:@"application/x-www-form-urlencoded;charset=UTF-8" forHTTPHeaderField:@"Content-Type"];
     [request setHTTPBody:postData];

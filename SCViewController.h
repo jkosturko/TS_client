@@ -25,10 +25,12 @@
 */
 @interface SCViewController : UIViewController <FBUserSettingsDelegate>{
     
-    NSArray *myGoals;
+    NSMutableArray *myGoals;
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *goalTableView;
 
+- (IBAction)editPressed:(UIBarButtonItem *)sender;
+@property (strong, nonatomic) IBOutlet UITableView *tableViewGoals;
 
 @end

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
+#define _PUTURL @"http://ts.spielly.com/"
 #define _GETURL @"http://ts.spielly.com/users/1/goals.json"
 //#define _GETURL @"http://tsdev.spielly.com/users/1/goals.json"
 
@@ -341,8 +341,7 @@ NSArray *myGoalPoints;
     myGoalPoints = [[NSArray alloc] initWithObjects:@"201pts", @"106pts", @"504pts",@"201pts", @"106pts", @"504pts",@"201pts", @"106pts", @"504pts",@"201pts", @"106pts", @"504pts",@"201pts", @"201pts", @"106pts", @"504pts",@"201pts",@"201pts", @"106pts", @"504pts",@"201pts", nil];
     myImageURLs = [[NSArray alloc] initWithObjects:@"http://arizonafoothillsmagazine.com/fitness/wp-content/uploads/2012/11/running-motivation-50x50.jpg",@"http://cdn5.droidmill.com/media/market-media/speed.game.app009.bike.racing_icon.png",@"http://ffxiv.gamerescape.com/w/images/thumb/7/79/Jade_Peas_Icon.png/50px-Jade_Peas_Icon.png", nil];
     
-    
-    myGoals = [self getGoals];
+    myGoals = [[NSMutableArray alloc] initWithArray:[self getGoals]];
     [_goalTableView reloadData];
     
     if (FBSession.activeSession.isOpen) {
@@ -418,12 +417,23 @@ NSArray *myGoalPoints;
     return cell;
 }
 
+
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+    // If row is deleted, remove it from the list.
+    if (editingStyle == UITableViewCellEditingStyleDelete) {
+        [self deleteGoal:[[myGoals objectAtIndex:indexPath.row] objectForKey:@"id"]]; //This shouldn't go here because I am mixing logic with data with view - temporary for now
+        [myGoals removeObjectAtIndex:indexPath.row];
+        [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:YES];
+    }
+}
+
+
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 1;
 }
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    return NO;
+    return YES;
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
@@ -805,4 +815,30 @@ NSArray *myGoalPoints;
     NSString *datePickerStringToSave = [datePickerFormat stringFromDate:datePicker.date];
     return datePickerStringToSave;
 }
+- (IBAction)editPressed:(UIBarButtonItem *)sender {
+         [self.tableViewGoals setEditing:YES];
+}
+
+- (void)deleteGoal:(NSString *)goalId {
+    
+    //I think a lot of these lines can be cleaned...maybe ask Carlos
+    NSString *putURL = [NSString stringWithFormat:@"%@goals/%@.json", _PUTURL, goalId];
+    NSData *postData = [putURL dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
+    NSString *postLength = [NSString stringWithFormat:@"%d", [postData length]];
+    
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
+    [request setURL:[NSURL URLWithString:putURL]];
+    [request setHTTPMethod:@"DELETE"];
+    [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
+    [request setValue:@"application/x-www-form-urlencoded;charset=UTF-8" forHTTPHeaderField:@"Content-Type"];
+    [request setHTTPBody:postData];
+    
+    NSURLResponse *response;
+    NSData *POSTReply = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:nil];
+    NSString *theReply = [[NSString alloc] initWithBytes:[POSTReply bytes] length:[POSTReply length] encoding: NSASCIIStringEncoding];
+    //        NSLog(@"Reply: %@", theReply);
+    
+    
+}
+
 @end
