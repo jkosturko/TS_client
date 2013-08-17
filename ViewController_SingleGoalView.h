@@ -9,9 +9,10 @@
 #import <UIKit/UIKit.h>
 
 @interface ViewController_SingleGoalView : UIViewController{
-    NSArray *mySubGoals;
+    NSMutableArray *mySubGoals;
 }
 
+- (IBAction)editPressed:(UIBarButtonItem *)sender;
 - (IBAction)removeGoal:(UIButton *)sender;
 @property (strong, nonatomic) id detailItem;
 
