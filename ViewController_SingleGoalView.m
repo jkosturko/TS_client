@@ -60,6 +60,7 @@
     [self configureView];
     
     mySubGoals = [[NSMutableArray alloc] initWithArray:[self getSubGoals]];
+    self.navigationItem.rightBarButtonItem = [self editButtonItem];
 }
 
 - (void)didReceiveMemoryWarning
@@ -251,8 +252,11 @@
     
 }
 
-- (IBAction)editPressed:(UIBarButtonItem *)sender {
-    [self.tableViewSubGoals setEditing:YES];
+-(void)setEditing:(BOOL)editing animated:(BOOL)animated {
+    [super setEditing:editing animated:animated];
+    [self.tableViewSubGoals setEditing:editing animated:animated];
 }
+
+
 
 @end

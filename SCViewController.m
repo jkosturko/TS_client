@@ -322,6 +322,8 @@ NSArray *myGoalPoints;
         self.menuTableView.backgroundView = nil;
     }
     
+    self.navigationItem.leftBarButtonItem = [self editButtonItem];
+    
 //    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]
 //                                              initWithTitle:@"Settings" 
 //                                                style:UIBarButtonItemStyleBordered 
@@ -815,8 +817,16 @@ NSArray *myGoalPoints;
     NSString *datePickerStringToSave = [datePickerFormat stringFromDate:datePicker.date];
     return datePickerStringToSave;
 }
-- (IBAction)editPressed:(UIBarButtonItem *)sender {
-         [self.tableViewGoals setEditing:YES];
+
+//probably can delete this
+//- (IBAction)editPressed:(UIBarButtonItem *)sender {
+//         [self.tableViewGoals setEditing:YES];
+//}
+
+-(void)setEditing:(BOOL)editing animated:(BOOL)animated {
+    [super setEditing:editing animated:animated];
+    [self.tableViewGoals setEditing:editing animated:animated];
+    // Add your custom code here
 }
 
 - (void)deleteGoal:(NSString *)goalId {
