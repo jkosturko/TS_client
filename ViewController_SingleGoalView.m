@@ -118,9 +118,10 @@
 {
     if ([[segue identifier] isEqualToString:@"editGoal"]) {
 //        if (self.detailItem)
-//            NSLog(@"%@", [self.detailItem objectForKey:@"id"] );
+      NSLog(@"%@", self.detailItem  );
 ////        NSIndexPath *indexPath = [self.goalTableView indexPathForSelectedRow];
 //        NSDate *object = myGoals[indexPath.row];
+        
         [[segue destinationViewController] setDetailItem:self.detailItem];
     }
     

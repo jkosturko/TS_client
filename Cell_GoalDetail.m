@@ -37,16 +37,5 @@
     _viewContainer.layer.cornerRadius = 3;
 }
 
-- (IBAction)buttonDeleteGoal:(UIButton *)sender {
-    UILabel *labelWithGoalId = (UILabel *)[[sender superview] viewWithTag:_GOALIDTAG];
-    [self deleteGoalonServer:labelWithGoalId.text];
-}
-
-//I will set the deleted flag on the server to true
-//Really should update my dataObj and then send to the server
--(void)deleteGoalonServer:(NSString *)goalID {
-    NSLog(@"Deleting Goal!, %@", goalID );
-    //Reload current page with new table?
-}
 
 @end

@@ -8,11 +8,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "ViewController_SingleGoalView.m"
-         timestampString = "398449995.450281"
+         timestampString = "398461041.372888"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "156"
-         endingLineNumber = "156"
+         startingLineNumber = "157"
+         endingLineNumber = "157"
          landmarkName = "-mapDataModel:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -60,7 +60,33 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "ViewController_SingleGoalView.m"
-         timestampString = "398450712.317747"
+         timestampString = "398461041.372888"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "224"
+         endingLineNumber = "224"
+         landmarkName = "-formatDate:backend:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "ViewController_SingleGoalView.m"
+         timestampString = "398461041.372888"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "177"
+         endingLineNumber = "177"
+         landmarkName = "-didSwipeGoalTable:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "ViewController_SingleGoalView.m"
+         timestampString = "398461041.372888"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "223"
@@ -72,34 +98,8 @@
          shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
-         filePath = "ViewController_SingleGoalView.m"
-         timestampString = "398449995.450281"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "176"
-         endingLineNumber = "176"
-         landmarkName = "@implementation ViewController_SingleGoalView"
-         landmarkType = "3">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "ViewController_SingleGoalView.m"
-         timestampString = "398450712.317747"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "222"
-         endingLineNumber = "222"
-         landmarkName = "-formatDate:backend:"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
          filePath = "SCViewController.m"
-         timestampString = "398451557.624689"
+         timestampString = "399267298.957063"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "793"

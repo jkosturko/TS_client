@@ -39,6 +39,7 @@ NSString *parentId;
     // Update the user interface for the detail item.
     
     if (self.detailItem) {
+        NSLog(@"%@", @" You stink");
 //        self.detailDescriptionLabel.text = [self.detailItem valueForKey:@"description"];
 //        self.goalDate.text = [self.detailItem valueForKey:@"target"];
     }
@@ -59,7 +60,6 @@ NSString *parentId;
 	// Do any additional setup after loading the view.
     
     myNewSubGoal = [[NSMutableDictionary alloc] init];
-    
     myDatePicker = [[UIDatePicker alloc]init];
 }
 

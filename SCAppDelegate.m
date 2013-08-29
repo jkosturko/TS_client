@@ -18,6 +18,7 @@
 #import "SCViewController.h"
 #import "SCLoginViewController.h"
 #import <FacebookSDK/FBSessionTokenCachingStrategy.h>
+#import "TestFlight.h"
 
 @implementation SCAppDelegate
 
@@ -73,6 +74,12 @@
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    //Test Flight stuff
+    // start of your application:didFinishLaunchingWithOptions // ...
+    [TestFlight takeOff:@"5e40259d-8dd5-41b4-a759-508d99e870c6"];
+    // The rest of your application:didFinishLaunchingWithOptions method// ...
+    
+    
     // If you have not added the -ObjC linker flag, you may need to uncomment the following line because
     // Nib files require the type to have been loaded before they can do the wireup successfully.  
     // http://stackoverflow.com/questions/1725881/unknown-class-myclass-in-interface-builder-file-error-at-runtime
