@@ -28,6 +28,8 @@
     NSMutableArray *myGoals;
 }
 
+@property (strong, nonatomic) id userItem;
+
 @property (weak, nonatomic) IBOutlet UITableView *goalTableView;
 
 - (IBAction)editPressed:(UIBarButtonItem *)sender;

@@ -15,10 +15,11 @@
 - (IBAction)editPressed:(UIBarButtonItem *)sender;
 - (IBAction)removeGoal:(UIButton *)sender;
 @property (strong, nonatomic) id detailItem;
+@property (strong, nonatomic) id userItem;
 
 - (IBAction)didSwipeGoalTable:(UISwipeGestureRecognizer *)sender;
 
-@property (strong, nonatomic) IBOutlet UITableView *tableViewSubGoals;
+@property (weak, nonatomic) IBOutlet UITableView *tableViewSubGoals;
 @property (weak, nonatomic) IBOutlet UILabel *goalDate;
 @property (weak, nonatomic) IBOutlet UILabel *detailDescriptionLabel;
 @end

@@ -76,7 +76,7 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     //Test Flight stuff
     // start of your application:didFinishLaunchingWithOptions // ...
-    [TestFlight takeOff:@"5e40259d-8dd5-41b4-a759-508d99e870c6"];
+    [TestFlight takeOff:@"5ae24908-656b-4824-8202-f81209b8e4be"];
     // The rest of your application:didFinishLaunchingWithOptions method// ...
     
     

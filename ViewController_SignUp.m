@@ -7,14 +7,15 @@
 //
 
 #define _POSTURL @"http://ts.spielly.com/users.json"
-#define _SEGUETOMAIN @"newUserSuccess"
+#define _SEGUETOPROFILE @"newUserSuccess"
 #define _MAINCONTROLLER @"SCViewController"
 #import "ViewController_SignUp.h"
-
+#import "SCViewController.h"
 #import "constants.h"
 
-@interface ViewController_SignUp ()
-
+@interface ViewController_SignUp () {
+    NSMutableDictionary *userLoginInfo;
+}
 @end
 
 @implementation ViewController_SignUp
@@ -46,9 +47,10 @@
 }
 
 #pragma mark - Model - Post Data to JSON
-- (NSDictionary *)addUser:(NSString *)userName lastName:(NSString *)lastName firstName:(NSString *)firstName password:(NSString *)password  {
-    NSString *post = [NSString stringWithFormat:@"[user]username=%@&[user]last_name=%@&[user]first_name=%@&[user]password=%@", userName,lastName, firstName, password];
-    NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
+- (NSDictionary *)addUser:(NSString *)userName lastName:(NSString *)lastName firstName:(NSString *)firstName password:(NSString *)password private:(BOOL)private  {
+    NSString *post = [NSString stringWithFormat:@"[user]username=%@&[user]last_name=%@&[user]first_name=%@&[user]password=%@&[user]private=%c", userName,lastName, firstName, password, private];
+    
+   NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
     NSString *postLength = [NSString stringWithFormat:@"%d", [postData length]];
     
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
@@ -63,11 +65,36 @@
    
    // NSString *theReply = [[NSString alloc] initWithBytes:[POSTReply bytes] length:[POSTReply length] encoding: NSASCIIStringEncoding];
     
-    NSDictionary *theReply = [NSJSONSerialization JSONObjectWithData:POSTReply options:kNilOptions error:nil];
+    
+    NSDictionary* json = [NSJSONSerialization JSONObjectWithData:POSTReply options:kNilOptions error:nil];
+    userLoginInfo = [[NSMutableDictionary alloc] initWithDictionary:json];
+    [self handleUserLoginFeedback:json];
+    
+    NSLog(@"%@ testjson", json);
 
-    return theReply;
+    return json;
     
 }
+
+//View: This will check if the userID was returned and allow enterance into the app
+//and also push the segue
+- (void)handleUserLoginFeedback:(NSDictionary *)returnedUserObj {
+    if ([returnedUserObj objectForKey:@"id"])
+    {
+        //[self dismissViewControllerAnimated:YES completion:nil];
+        [self performSegueWithIdentifier:_SEGUETOPROFILE sender:self];
+    }
+}
+
+//Data: Sends data to next view controller
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if ([[segue identifier] isEqualToString:_SEGUETOPROFILE]) {
+        SCViewController *myController = segue.destinationViewController;
+        [myController setUserItem:userLoginInfo];
+    }
+}
+
 
 - (void)checkUIforSubmitErrors {
     //check for blank fields
@@ -98,10 +125,10 @@
     [self checkUIforSubmitErrors];
     
     //Submit New User to Database
-    NSDictionary *reply = [self addUser:_userEmail.text lastName:_userLast.text firstName:_userLast.text password:_userPassword.text];
+    NSDictionary *reply = [self addUser:_userEmail.text lastName:_userLast.text firstName:_userFirst.text password:_userPassword.text private:YES];
     
     if ([reply valueForKey:@"id"] ) {
-        [self performSegueWithIdentifier:_SEGUETOMAIN sender:self];
+        [self performSegueWithIdentifier:_SEGUETOPROFILE sender:self];
     }
     else {
         //Report Database Errors

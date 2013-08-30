@@ -11,8 +11,9 @@
 @interface ViewController_SignIn : UIViewController <UITextFieldDelegate>
 @property (weak, nonatomic) IBOutlet UITextField *userEmail;
 @property (weak, nonatomic) IBOutlet UITextField *userPassword;
-//- (IBAction)submitUser:(UIButton *)sender;
-- (IBAction)submitUser:(UIBarButtonItem *)sender;
+@property (strong, nonatomic) id detailItem;
 - (IBAction)cancelButton:(UIBarButtonItem *)sender;
+- (IBAction)loginUser:(UIBarButtonItem *)sender;
+
 
 @end

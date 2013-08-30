@@ -7,13 +7,14 @@
 //
 
 
-#define _GETURL @"http://ts.spielly.com/goals/1/goals.json"
-//#define _GETURL @"http://tsdev.spielly.com/goals/1/goals.json"
+#define _GETURL @"http://ts.spielly.com/"
 #define _TAGGOALTITLE 10
 #define _PUTURL @"http://ts.spielly.com/"
+#define _SEGUETOMODIFYGOAL @"modifySubGoal"
 
 #import "ViewController_SingleGoalView.h"
 #import "Cell_GoalDetail.h"
+#import "ViewController_CreateSubGoal.h"
 
 @interface ViewController_SingleGoalView () {
     NSString *goalId;
@@ -26,6 +27,16 @@
 
 
 #pragma mark - Managing the detail item
+
+- (void)setUserItem:(id)userItem
+{
+    if (_userItem != userItem) {
+        _userItem = userItem;
+        
+        // Update the view.
+        [self configureView];
+    }
+}
 
 - (void)setDetailItem:(id)newDetailItem
 {
@@ -59,9 +70,20 @@
 	// Do any additional setup after loading the view, typically from a nib.
     [self configureView];
     
+    
+    
     mySubGoals = [[NSMutableArray alloc] initWithArray:[self getSubGoals]];
     self.navigationItem.rightBarButtonItem = [self editButtonItem];
 }
+
+-(void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    
+
+     mySubGoals = [[NSMutableArray alloc] initWithArray:[self getSubGoals]];
+
+}
+
 
 - (void)didReceiveMemoryWarning
 {
@@ -78,10 +100,8 @@
 
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-//    NSLog(@"%@", [[mySubGoals objectAtIndex:indexPath.row] objectForKey:@"completion"]);
-    Cell_GoalDetail *cell = [tableView dequeueReusableCellWithIdentifier:@"cellDetail" forIndexPath:indexPath];
+       Cell_GoalDetail *cell = [tableView dequeueReusableCellWithIdentifier:@"cellDetail" forIndexPath:indexPath];
     
-
     //Strikethrough title if complete
     if ([[mySubGoals objectAtIndex:indexPath.row] objectForKey:@"completion"] != [NSNull null]) {
         cell.mySubGoalTitle.attributedText =  [self updateStrikeThrough:[[mySubGoals objectAtIndex:indexPath.row] objectForKey:@"description"] add:YES];
@@ -89,6 +109,7 @@
     else {
         cell.mySubGoalTitle.text = [[[mySubGoals objectAtIndex:indexPath.row] objectForKey:@"description"] capitalizedString];
     }
+    
     // Here we use the new provided setImageWithURL: method to load the web image
     cell.activityName.text = [[mySubGoals objectAtIndex:indexPath.row] objectForKey:@"description"];
     cell.labelGoalId.text = [NSString stringWithFormat:@"%@",[[mySubGoals objectAtIndex:indexPath.row] objectForKey:@"id"] ];
@@ -113,35 +134,52 @@
     }
 }
 
-
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     if ([[segue identifier] isEqualToString:@"editGoal"]) {
-//        if (self.detailItem)
-      NSLog(@"%@", self.detailItem  );
-////        NSIndexPath *indexPath = [self.goalTableView indexPathForSelectedRow];
-//        NSDate *object = myGoals[indexPath.row];
-        
         [[segue destinationViewController] setDetailItem:self.detailItem];
     }
     
     if ([[segue identifier] isEqualToString:@"newSubGoal"]) {
-//        NSIndexPath *indexPath = [self.goalTableView indexPathForSelectedRow];
-//        NSDate *object = myGoals[indexPath.row];
         [[segue destinationViewController] setDetailItem:goalId];
+        [[segue destinationViewController] setUserItem:_userItem];
     }
+    if ([[segue identifier] isEqualToString:_SEGUETOMODIFYGOAL]) {
+        [[segue destinationViewController] setDetailItem:self.detailItem];
+        NSLog(@"Hey preparing for segue to modify goal%@", @"");
+    }
+    
+            NSLog(@"Prepare%@", @"");
+}
+
+
+//View: This will check if the userID was returned and allow enterance into the app
+//and also push the segue
+- (void)activateSegue {
+    //[self dismissViewControllerAnimated:YES completion:nil];
+    [self performSegueWithIdentifier:_SEGUETOMODIFYGOAL sender:self];
 }
 
 
 #pragma mark - Get Data from JSON
 - (NSArray *)getSubGoals {
-    NSString *myURL = [[NSString stringWithFormat:@"http://ts.spielly.com/goals/%@/goals.json?", goalId] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-    NSData *jsonFeed = [NSData dataWithContentsOfURL:[NSURL URLWithString:myURL]];
     
-    NSArray *dataArray = nil;
-    if (jsonFeed) {
-        dataArray = [NSJSONSerialization JSONObjectWithData:jsonFeed options:kNilOptions error:nil];
+    NSString *urlString = [NSString stringWithFormat:@"%@goals/%@/goals.json", _GETURL, goalId];
+    
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
+    [request setHTTPMethod:@"GET"];
+    [request setURL:[NSURL URLWithString:urlString]];
+    
+    NSError *error = [[NSError alloc] init];
+    NSHTTPURLResponse *responseCode = nil;
+    
+    NSData *oResponseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&responseCode error:&error];
+    
+    if([responseCode statusCode] != 200){
+        NSLog(@"Error getting %@, HTTP status code %i", urlString, [responseCode statusCode]);
     }
+    
+    NSArray *dataArray = [NSJSONSerialization JSONObjectWithData:oResponseData options:kNilOptions error:nil];
     
     return [self mapDataModel:dataArray];
 }

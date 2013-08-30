@@ -8,9 +8,8 @@
 
 //#define _POSTURL @"http://tsdev.spielly.com/goals.json"
 #define _POSTURL @"http://ts.spielly.com/goals.json"
-#define _USERID 1
-
 #import "ViewController_CreateSubGoal.h"
+#import "ViewController_SingleGoalView.h"
 
 @interface ViewController_CreateSubGoal ()
 - (void)configureView;
@@ -27,6 +26,7 @@ NSString *parentId;
     if (_detailItem != newDetailItem) {
         _detailItem = newDetailItem;
     
+        NSLog(@"%@Creat Goal", _detailItem);
         parentId = newDetailItem;
         
         // Update the view.
@@ -39,7 +39,6 @@ NSString *parentId;
     // Update the user interface for the detail item.
     
     if (self.detailItem) {
-        NSLog(@"%@", @" You stink");
 //        self.detailDescriptionLabel.text = [self.detailItem valueForKey:@"description"];
 //        self.goalDate.text = [self.detailItem valueForKey:@"target"];
     }
@@ -76,6 +75,7 @@ NSString *parentId;
 
     [self updateModelwithNewGoal];
     [self dismissViewControllerAnimated:YES completion:nil];
+    
 }
 
 #pragma mark - Controller: Update Model with New Goal
@@ -87,12 +87,12 @@ NSString *parentId;
 }
 
 #pragma mark - Model - Post Data to JSON
-- (void)addSubGoal:(NSString *)goalName targetDate:(NSString *)targetDate {
+- (NSArray *)addSubGoal:(NSString *)goalName targetDate:(NSString *)targetDate {
     int categoryId = 1;
 //    NSString *targetDate = @"2013-06-05";
     
     //http://ts.spielly.com/goals.json?[goal]description=SubGoal1&[goal]category=cat1&[goal]parent_id=1&[goal]user_id=1
-    NSString *post = [NSString stringWithFormat:@"[goal]description=%@&[goal]user_id=%d&[goal]category=%d&[goal]parent_id=%@&[goal]target=%@", goalName,_USERID, categoryId, parentId, targetDate];
+    NSString *post = [NSString stringWithFormat:@"[goal]description=%@&[goal]user_id=%@&[goal]category=%d&[goal]parent_id=%@&[goal]target=%@", goalName,[_userItem objectForKey:@"id"], categoryId, parentId, targetDate];
     NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
     NSString *postLength = [NSString stringWithFormat:@"%d", [postData length]];
     
@@ -106,8 +106,17 @@ NSString *parentId;
     NSURLResponse *response;
     NSData *POSTReply = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:nil];
     NSString *theReply = [[NSString alloc] initWithBytes:[POSTReply bytes] length:[POSTReply length] encoding: NSASCIIStringEncoding];
-//        NSLog(@"Reply: %@", theReply);
+        NSLog(@"Reply: %@", theReply);
+
+    
+    NSArray *dataArray = [NSJSONSerialization JSONObjectWithData:POSTReply options:kNilOptions error:nil];
+    
+
+        NSLog(@"dataArray: %@", dataArray);
+    return dataArray;
+    
 }
+
 - (IBAction)pushCancel:(UIBarButtonItem *)sender {
     
     [self dismissViewControllerAnimated:YES completion:nil];

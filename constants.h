@@ -9,7 +9,7 @@
 #ifndef thriveconnect_constants_h
 #define thriveconnect_constants_h
 
-#define _POSTURL @"http://ts.spielly.com/users.json"
+#define _POSTURL @"http://tsdev.spielly.com/users.json"
 
 
 #endif

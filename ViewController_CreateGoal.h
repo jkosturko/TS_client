@@ -27,4 +27,5 @@
 @property (weak, nonatomic) IBOutlet UIButton *goalImage;
 @property (weak, nonatomic) IBOutlet UISwitch *goalPrivacy;
 @property (strong, nonatomic) id detailItem;
+@property (strong, nonatomic) id userItem;
 @end

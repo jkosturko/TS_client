@@ -8,7 +8,6 @@
 //#define _POSTURL @"http://tsdev.spielly.com/goals.json"
 #define _POSTURL @"http://ts.spielly.com/goals.json"
 #define _PUTURL @"http://ts.spielly.com/goals/1.json"
-#define _USERID 1
 
 
 #import "ViewController_CreateGoal.h"
@@ -18,6 +17,16 @@
 @end
 
 @implementation ViewController_CreateGoal
+
+- (void)setUserItem:(id)userItem
+{
+    if (_userItem != userItem) {
+        _userItem = userItem;
+        
+        // Update the view.
+        [self configureView];
+    }
+}
 
 - (void)setDetailItem:(id)newDetailItem
 {
@@ -144,7 +153,7 @@
 #pragma mark - Model - Post Data to JSON
 - (void)addGoal:(NSString *)goalName category:(NSString *)categoryName  {
     
-    NSString *post = [NSString stringWithFormat:@"[goal]description=%@&[goal]user_id=%d&[goal]category=%d&[goal]private=%@&[goal]target=%@", goalName,_USERID, 1, @"false", @"2014-09-22"];
+    NSString *post = [NSString stringWithFormat:@"[goal]description=%@&[goal]user_id=%@&[goal]category=%d&[goal]private=%@&[goal]target=%@", goalName,[_userItem objectForKey:@"id"], 1, @"false", @"2014-09-22"];
     NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
     NSString *postLength = [NSString stringWithFormat:@"%d", [postData length]];
     
@@ -167,7 +176,7 @@
     NSLog(@"Got to Add goal %@", goalName);
     
     //?[goal]description=new
-    NSString *post = [NSString stringWithFormat:@"[goal]description=%@&[goal]user_id=%d&[goal]category=%@&[goal]target=%@", goalName,_USERID, categoryName, @"2011-09-22"];
+    NSString *post = [NSString stringWithFormat:@"[goal]description=%@&[goal]user_id=%@&[goal]category=%@&[goal]target=%@", goalName,[_userItem objectForKey:@"id"], categoryName, @"2011-09-22"];
     NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
     NSString *postLength = [NSString stringWithFormat:@"%d", [postData length]];
     

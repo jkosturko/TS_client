@@ -14,9 +14,7 @@
  * limitations under the License.
  */
 #define _PUTURL @"http://ts.spielly.com/"
-#define _GETURL @"http://ts.spielly.com/users/1/goals.json"
-//#define _GETURL @"http://tsdev.spielly.com/users/1/goals.json"
-
+#define _GETURL @"http://ts.spielly.com/users/"
 
 #import "SCViewController.h"
 #import "SCAppDelegate.h"
@@ -28,6 +26,7 @@
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "constants.h"
 #import "ViewController_SingleGoalView.h"
+#import "ViewController_CreateGoal.h"
 
 @interface SCViewController() < UITableViewDataSource, 
                                 FBFriendPickerDelegate,
@@ -38,18 +37,18 @@
 
 @property (strong, nonatomic) FBUserSettingsViewController *settingsViewController;
 @property (strong, nonatomic) IBOutlet FBProfilePictureView *userProfileImage;
-@property (strong, nonatomic) IBOutlet UILabel *userNameLabel;
 @property (strong, nonatomic) IBOutlet UIButton *announceButton;
 @property (strong, nonatomic) IBOutlet UITableView *menuTableView;
+@property (strong, nonatomic) IBOutlet UILabel *userNameLabel;
 @property (strong, nonatomic) UIActionSheet *mealPickerActionSheet;
 @property (retain, nonatomic) NSArray *mealTypes;
-
 @property (strong, nonatomic) NSObject<FBGraphPlace> *selectedPlace;
 @property (strong, nonatomic) NSString *selectedMeal;
 @property (strong, nonatomic) NSArray *selectedFriends;
 @property (strong, nonatomic) CLLocationManager *locationManager;
 @property (strong, nonatomic) FBCacheDescriptor *placeCacheDescriptor;
 @property (strong, nonatomic) UIActivityIndicatorView *activityIndicator;
+- (void)configureView;
 
 @end
 
@@ -72,6 +71,24 @@ NSArray *test;
 NSArray *myDates;
 NSArray *myImageURLs;
 NSArray *myGoalPoints;
+
+- (void)setUserItem:(id)userItem
+{
+    if (_userItem != userItem) {
+        _userItem = userItem;
+        
+        // Update the view.
+        [self configureView];
+    }
+}
+
+- (void)configureView
+{
+    // Update the user interface for the detail item.
+    if (self.userItem) {
+
+    }
+}
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -305,6 +322,12 @@ NSArray *myGoalPoints;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    //Set User Name
+    NSString *fname = [_userItem objectForKey:@"first_name"];
+    NSString *lname = [_userItem objectForKey:@"last_name"];
+    self.userNameLabel.text = [NSString stringWithFormat:@"%@ %@", fname, lname];
+
 
     // Get the CLLocationManager going.
     self.locationManager = [[CLLocationManager alloc] init];
@@ -322,7 +345,7 @@ NSArray *myGoalPoints;
         self.menuTableView.backgroundView = nil;
     }
     
-    self.navigationItem.leftBarButtonItem = [self editButtonItem];
+    self.navigationItem.rightBarButtonItem = [self editButtonItem];
     
 //    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]
 //                                              initWithTitle:@"Settings" 
@@ -444,6 +467,11 @@ NSArray *myGoalPoints;
         NSIndexPath *indexPath = [self.goalTableView indexPathForSelectedRow];
         NSDate *object = myGoals[indexPath.row];
         [[segue destinationViewController] setDetailItem:object];
+        [[segue destinationViewController] setUserItem:_userItem];
+        
+    } else if ([[segue identifier] isEqualToString:@"segueCreateGoal"])  {
+        [[segue destinationViewController] setUserItem:_userItem];
+        
     }
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -782,16 +810,26 @@ NSArray *myGoalPoints;
                                                       fieldsForRequest:nil];
 }
 
-#pragma mark - Get Data from JSON
+#pragma mark - HTTP GET to get goals
 - (NSArray *)getGoals {
-    NSString *myURL = [[NSString stringWithFormat:@"%@?", _GETURL] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-    NSData *jsonFeed = [NSData dataWithContentsOfURL:[NSURL URLWithString:myURL]];
     
-    NSArray *dataArray = nil;
-    if (jsonFeed) {
-        dataArray = [NSJSONSerialization JSONObjectWithData:jsonFeed options:kNilOptions error:nil];
+    NSString *urlString = [NSString stringWithFormat:@"%@%@/goals.json", _GETURL,[_userItem objectForKey:@"id"]];
+    
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
+    [request setHTTPMethod:@"GET"];
+    [request setURL:[NSURL URLWithString:urlString]];
+    
+    NSError *error = [[NSError alloc] init];
+    NSHTTPURLResponse *responseCode = nil;
+    
+    NSData *oResponseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&responseCode error:&error];
+    
+    if([responseCode statusCode] != 200){
+        NSLog(@"Error getting %@, HTTP status code %i", urlString, [responseCode statusCode]);
     }
     
+    NSArray *dataArray = [NSJSONSerialization JSONObjectWithData:oResponseData options:kNilOptions error:nil];
+
     return [self mapDataModel:dataArray];
 }
 
@@ -845,7 +883,7 @@ NSArray *myGoalPoints;
     
     NSURLResponse *response;
     NSData *POSTReply = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:nil];
-    NSString *theReply = [[NSString alloc] initWithBytes:[POSTReply bytes] length:[POSTReply length] encoding: NSASCIIStringEncoding];
+    //NSString *theReply = [[NSString alloc] initWithBytes:[POSTReply bytes] length:[POSTReply length] encoding: NSASCIIStringEncoding];
     //        NSLog(@"Reply: %@", theReply);
     
     

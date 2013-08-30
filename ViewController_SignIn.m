@@ -6,15 +6,33 @@
 //  Copyright (c) 2013 Kosturko, Jessica. All rights reserved.
 //
 
-#define _GETURL @"http://ts.spielly.com/users/login.json"
+#define _GETURL @"http://tsdev.spielly.com/users/login.json"
+#define _POSTURL @"http://tsdev.spielly.com/users/login.json"
 #define _SEGUETOPROFILE @"signInToMain"
 #import "ViewController_SignIn.h"
+#import "SCViewController.h"
 
-@interface ViewController_SignIn ()
-
+@interface ViewController_SignIn () {
+    NSMutableDictionary *userLoginInfo;
+}
+- (void)configureView;
 @end
 
 @implementation ViewController_SignIn
+
+- (void)setDetailItem:(id)newDetailItem
+{
+
+
+}
+
+- (void)configureView
+{
+    // Update the user interface for the detail item.
+    if (self.detailItem) {
+        
+    }
+}
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -31,8 +49,8 @@
     self.userEmail.delegate = self;
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-}
 
+}
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -49,26 +67,51 @@
         dataArray = [NSJSONSerialization JSONObjectWithData:jsonFeed options:kNilOptions error:nil];
     }
     
-//    NSLog(@"%@", dataArray);
-    
     return dataArray;
-}
-
-//- (IBAction)submitUser:(UIB *)sender {
-//    NSArray *user = [self signInUser:_userEmail.text password:_userPassword.text];
-//    if ([user valueForKey:@"id"])
-//        [self performSegueWithIdentifier:_SEGUETOPROFILE sender:self];
-//}
-
-- (IBAction)submitUser:(UIBarButtonItem *)sender {
-    NSArray *user = [self signInUser:_userEmail.text password:_userPassword.text];
-    if ([user valueForKey:@"id"])
-//            [self dismissViewControllerAnimated:YES completion:nil];
-       [self performSegueWithIdentifier:_SEGUETOPROFILE sender:self];
 }
 
 - (IBAction)cancelButton:(UIBarButtonItem *)sender {
     [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (IBAction)loginUser:(UIBarButtonItem *)sender {
+    NSString *urlString = [NSString stringWithFormat:@"%@?username=%@&password=%@", _GETURL, _userEmail.text, _userPassword.text];
+    
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
+    [request setHTTPMethod:@"GET"];
+    [request setURL:[NSURL URLWithString:urlString]];
+    
+    NSError *error = [[NSError alloc] init];
+    NSHTTPURLResponse *responseCode = nil;
+    
+    NSData *oResponseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&responseCode error:&error];
+    
+    if([responseCode statusCode] != 200){
+        NSLog(@"Error getting %@, HTTP status code %i", urlString, [responseCode statusCode]);
+    }
+
+    NSDictionary* json = [NSJSONSerialization JSONObjectWithData:oResponseData options:kNilOptions error:&error];
+    userLoginInfo = [[NSMutableDictionary alloc] initWithDictionary:json];
+    [self handleUserLoginFeedback:json];
+}
+
+//View: This will check if the userID was returned and allow enterance into the app
+//and also push the segue
+- (void)handleUserLoginFeedback:(NSDictionary *)returnedUserObj {
+    if ([returnedUserObj objectForKey:@"id"])
+    {
+        //[self dismissViewControllerAnimated:YES completion:nil];
+        [self performSegueWithIdentifier:_SEGUETOPROFILE sender:self];
+    }
+}
+
+//Data: Sends data to next view controller
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if ([[segue identifier] isEqualToString:_SEGUETOPROFILE]) {
+        SCViewController *myController = segue.destinationViewController;
+        [myController setUserItem:userLoginInfo];
+    }
 }
 
 #pragma mark View - Return on Keyboard works

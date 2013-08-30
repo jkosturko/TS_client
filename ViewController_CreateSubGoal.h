@@ -12,7 +12,9 @@
         NSMutableDictionary *myNewSubGoal;
         UIDatePicker *myDatePicker;
 }
+
 @property (strong, nonatomic) id detailItem;
+@property (strong, nonatomic) id userItem;
 @property (strong, nonatomic) IBOutlet UITextField *textFieldTargetDate;
 
 - (IBAction)pushSave:(UIBarButtonItem *)sender;
