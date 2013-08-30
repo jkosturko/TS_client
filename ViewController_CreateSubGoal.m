@@ -7,7 +7,8 @@
 //
 
 //#define _POSTURL @"http://tsdev.spielly.com/goals.json"
-#define _POSTURL @"http://ts.spielly.com/goals.json"
+#define _POSTURL @"http://ts.spielly.com/goals/1/goals.json"
+#define _PUTURL @"http://ts.spielly.com/goals/1.json"
 #import "ViewController_CreateSubGoal.h"
 #import "ViewController_SingleGoalView.h"
 
@@ -25,9 +26,17 @@ NSString *parentId;
 {
     if (_detailItem != newDetailItem) {
         _detailItem = newDetailItem;
-    
-        NSLog(@"%@Creat Goal", _detailItem);
-        parentId = newDetailItem;
+        
+        // Update the view.
+        [self configureView];
+    }
+}
+
+- (void)setParentId:(id)newParentId
+{
+    myNewSubGoal = [[NSMutableDictionary alloc] init];
+    if (parentId != newParentId) {
+        parentId = newParentId;
         
         // Update the view.
         [self configureView];
@@ -38,10 +47,8 @@ NSString *parentId;
 {
     // Update the user interface for the detail item.
     
-    if (self.detailItem) {
-//        self.detailDescriptionLabel.text = [self.detailItem valueForKey:@"description"];
-//        self.goalDate.text = [self.detailItem valueForKey:@"target"];
-    }
+
+    
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -56,10 +63,20 @@ NSString *parentId;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view.
+
+    // Do any additional setup after loading the view.
     
-    myNewSubGoal = [[NSMutableDictionary alloc] init];
     myDatePicker = [[UIDatePicker alloc]init];
+    
+    if (self.detailItem) {
+        myNewSubGoal = [[NSMutableDictionary alloc] init];
+        NSLog(@"%@self.detailItem", self.detailItem);
+        
+        //In Edit mode/ prepopulate categories
+        _textFieldSubGoal.text = [NSString stringWithFormat:@"%@",[self.detailItem objectForKey:@"description"]];
+        _textFieldTargetDate.text = [NSString stringWithFormat:@"%@",[self.detailItem objectForKey:@"target"]];
+        _textFieldCategory.text = [NSString stringWithFormat:@"%@",[self.detailItem objectForKey:@"category"]];
+    }
 }
 
 - (void)didReceiveMemoryWarning
@@ -69,9 +86,9 @@ NSString *parentId;
 }
 
 - (IBAction)pushSave:(UIBarButtonItem *)sender {
-    
-    [myNewSubGoal setValue:_textFieldSubGoal.text forKey:@"name"];
-    [myNewSubGoal setValue:_textFieldTargetDate.text forKey:@"date"];
+    [myNewSubGoal setObject:_textFieldSubGoal.text forKey:@"name"];
+    [myNewSubGoal setObject:_textFieldTargetDate.text forKey:@"date"];
+    [myNewSubGoal setObject:_textFieldCategory.text forKey:@"category"];
 
     [self updateModelwithNewGoal];
     [self dismissViewControllerAnimated:YES completion:nil];
@@ -80,16 +97,17 @@ NSString *parentId;
 
 #pragma mark - Controller: Update Model with New Goal
 - (void)updateModelwithNewGoal {
-//    if ([myNewSubGoal objectForKey:@"id"])
-//        NSLog(@"%@",@"updating logic here");// [self updateGoal:[myNewSubGoal valueForKey:@"name"] category:[myNewSubGoal valueForKey:@"type"]];
-//    else
-        [self addSubGoal:[myNewSubGoal valueForKey:@"name"] targetDate:[myNewSubGoal valueForKey:@"date"]];
+    if (myNewSubGoal) {
+        NSLog(@"%@, %@",@"updating logic here", myNewSubGoal);
+        [self updateGoal:[myNewSubGoal valueForKey:@"name"] category:[myNewSubGoal valueForKey:@"type"]];
+    }
+    else
+        [self addSubGoal:_textFieldSubGoal.text targetDate:_textFieldTargetDate.text];
 }
 
 #pragma mark - Model - Post Data to JSON
 - (NSArray *)addSubGoal:(NSString *)goalName targetDate:(NSString *)targetDate {
     int categoryId = 1;
-//    NSString *targetDate = @"2013-06-05";
     
     //http://ts.spielly.com/goals.json?[goal]description=SubGoal1&[goal]category=cat1&[goal]parent_id=1&[goal]user_id=1
     NSString *post = [NSString stringWithFormat:@"[goal]description=%@&[goal]user_id=%@&[goal]category=%d&[goal]parent_id=%@&[goal]target=%@", goalName,[_userItem objectForKey:@"id"], categoryId, parentId, targetDate];
@@ -106,25 +124,19 @@ NSString *parentId;
     NSURLResponse *response;
     NSData *POSTReply = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:nil];
     NSString *theReply = [[NSString alloc] initWithBytes:[POSTReply bytes] length:[POSTReply length] encoding: NSASCIIStringEncoding];
-        NSLog(@"Reply: %@", theReply);
-
-    
     NSArray *dataArray = [NSJSONSerialization JSONObjectWithData:POSTReply options:kNilOptions error:nil];
     
-
-        NSLog(@"dataArray: %@", dataArray);
+    NSLog(@"%@,%@",post, _POSTURL);
     return dataArray;
     
 }
 
 - (IBAction)pushCancel:(UIBarButtonItem *)sender {
-    
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
 {
-    
     myDatePicker.datePickerMode = UIDatePickerModeDate;
     _textFieldTargetDate.inputView = myDatePicker;
     
@@ -135,7 +147,6 @@ NSString *parentId;
 - (void)dateChanged:(id)sender
 {
     UIDatePicker *datePicker = (UIDatePicker *)sender;
-    
     _textFieldTargetDate.text = [self getPickerFormat:datePicker readable:YES];
 }
 
@@ -148,6 +159,36 @@ NSString *parentId;
    
     NSString *datePickerStringToSave = [datePickerFormat stringFromDate:datePicker.date];
     return datePickerStringToSave;
+}
+
+#pragma mark - Model - HTTP PUT: Update Goal
+- (void)updateGoal:(NSString *)goalName category:(NSString *)categoryName  {
+    NSLog(@"Got to update/modify %@", goalName);
+    
+    NSString *goalDescription = [myNewSubGoal valueForKey:@"name"];
+    NSString *category = [myNewSubGoal valueForKey:@"category"];
+    NSString *targetDate = [myNewSubGoal valueForKey:@"date"];
+    
+    NSString *url = [NSString stringWithFormat: @"http://ts.spielly.com/goals/%@.json", [self.detailItem objectForKey:@"id"]];
+    NSString *post = [NSString stringWithFormat:@"[goal]description=%@&[goal]category=%@&[goal]target=%@", goalDescription, category, targetDate];
+    NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
+    NSString *postLength = [NSString stringWithFormat:@"%d", [postData length]];
+    
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
+    [request setURL:[NSURL URLWithString:url]];
+    [request setHTTPMethod:@"PUT"];
+    [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
+    [request setValue:@"application/x-www-form-urlencoded;charset=UTF-8" forHTTPHeaderField:@"Content-Type"];
+    [request setHTTPBody:postData];
+    
+    NSURLResponse *response;
+    NSData *POSTReply = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:nil];
+    NSString *theReply = [[NSString alloc] initWithBytes:[POSTReply bytes] length:[POSTReply length] encoding: NSASCIIStringEncoding];
+     NSLog(@"Reply: %@", theReply);
+         NSLog(@"url: %@, post; %@", url, post);
+    
+    //Reset My new Goal
+    myNewSubGoal = [[NSMutableDictionary alloc] init];
 }
 
 @end

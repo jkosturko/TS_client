@@ -70,7 +70,7 @@
     userLoginInfo = [[NSMutableDictionary alloc] initWithDictionary:json];
     [self handleUserLoginFeedback:json];
     
-    NSLog(@"%@ testjson", json);
+//    NSLog(@"%@ testjson", json);
 
     return json;
     

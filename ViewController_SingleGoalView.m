@@ -70,20 +70,15 @@
 	// Do any additional setup after loading the view, typically from a nib.
     [self configureView];
     
-    
-    
     mySubGoals = [[NSMutableArray alloc] initWithArray:[self getSubGoals]];
     self.navigationItem.rightBarButtonItem = [self editButtonItem];
 }
 
 -(void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    
 
      mySubGoals = [[NSMutableArray alloc] initWithArray:[self getSubGoals]];
-
 }
-
 
 - (void)didReceiveMemoryWarning
 {
@@ -91,9 +86,7 @@
     // Dispose of any resources that can be recreated.
 }
 
-
 #pragma mark - UITableViewDataSource methods and related helpers
-
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return [mySubGoals count];
 }
@@ -134,24 +127,26 @@
     }
 }
 
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     if ([[segue identifier] isEqualToString:@"editGoal"]) {
         [[segue destinationViewController] setDetailItem:self.detailItem];
     }
-    
     if ([[segue identifier] isEqualToString:@"newSubGoal"]) {
-        [[segue destinationViewController] setDetailItem:goalId];
+        NSIndexPath *indexPath = [self.tableViewSubGoals indexPathForSelectedRow];
+        NSDate *object = mySubGoals[indexPath.row];
+        [[segue destinationViewController] setParentID:[object valueForKey:@"parent_id"]];
+        
+        //[[segue destinationViewController] setDetailItem:goalId];
         [[segue destinationViewController] setUserItem:_userItem];
     }
-    if ([[segue identifier] isEqualToString:_SEGUETOMODIFYGOAL]) {
-        [[segue destinationViewController] setDetailItem:self.detailItem];
-        NSLog(@"Hey preparing for segue to modify goal%@", @"");
-    }
     
-            NSLog(@"Prepare%@", @"");
+    //This goes to modify sub goal (uses create goal nib)
+    if ([[segue identifier] isEqualToString:_SEGUETOMODIFYGOAL]) {
+        NSIndexPath *indexPath = [self.tableViewSubGoals indexPathForSelectedRow];
+        NSDate *object = mySubGoals[indexPath.row];
+        [[segue destinationViewController] setDetailItem:object];
+    }
 }
-
 
 //View: This will check if the userID was returned and allow enterance into the app
 //and also push the segue
@@ -159,7 +154,6 @@
     //[self dismissViewControllerAnimated:YES completion:nil];
     [self performSegueWithIdentifier:_SEGUETOMODIFYGOAL sender:self];
 }
-
 
 #pragma mark - Get Data from JSON
 - (NSArray *)getSubGoals {

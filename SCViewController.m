@@ -360,6 +360,7 @@ NSArray *myGoalPoints;
 
 -(void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    [_goalTableView reloadData];
     
     test = [[NSArray alloc] initWithObjects:@"Run a Marathon", @"Win a Bike Race", @"Eat 400 Peas", nil];
     myDates = [[NSArray alloc] initWithObjects:@"Dec 31, 2014", @"June 31 2013", @"Sept 30, 2014", nil];
@@ -375,6 +376,7 @@ NSArray *myGoalPoints;
 }
 
 - (void) viewDidAppear:(BOOL)animated {
+        [_goalTableView reloadData];
     if (FBSession.activeSession.isOpen) {
         [self.locationManager startUpdatingLocation];
     }

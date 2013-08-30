@@ -62,7 +62,6 @@
 {
     if (self.detailItem) {
         myNewGoal = [[NSMutableDictionary alloc] initWithDictionary:self.detailItem];
-//        myNewGoal = self.detailItem;
         
         //if you pressed edit then
         self.goalName.text = [self.detailItem objectForKey:@"description"];
@@ -76,14 +75,11 @@
         myNewGoal = [[NSMutableDictionary alloc] init];
 
     
-//Don't remember what this was for
+    // Don't remember what this was for
     self.goalName.delegate = self;
     self.goalDate.delegate = self;
     self.goalType.delegate = self;
     
-
-
-
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
 }
@@ -122,7 +118,6 @@
     NSData *POSTReply = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:nil];
     NSString *theReply = [[NSString alloc] initWithBytes:[POSTReply bytes] length:[POSTReply length] encoding: NSASCIIStringEncoding];
    // NSLog(@"Reply: %@", theReply);
-    
     
 }
 
@@ -167,15 +162,14 @@
     NSURLResponse *response;
     NSData *POSTReply = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:nil];
     NSString *theReply = [[NSString alloc] initWithBytes:[POSTReply bytes] length:[POSTReply length] encoding: NSASCIIStringEncoding];
-//     NSLog(@"Reply: %@", theReply);
+    // NSLog(@"Reply: %@", theReply);
 }
 
 
-#pragma mark - Model - Post Data to JSON
+#pragma mark - Model - HTTP PUT: Update Goal
 - (void)updateGoal:(NSString *)goalName category:(NSString *)categoryName  {
-    NSLog(@"Got to Add goal %@", goalName);
+    NSLog(@"Got to update/modify %@", goalName);
     
-    //?[goal]description=new
     NSString *post = [NSString stringWithFormat:@"[goal]description=%@&[goal]user_id=%@&[goal]category=%@&[goal]target=%@", goalName,[_userItem objectForKey:@"id"], categoryName, @"2011-09-22"];
     NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
     NSString *postLength = [NSString stringWithFormat:@"%d", [postData length]];
@@ -190,7 +184,7 @@
     NSURLResponse *response;
     NSData *POSTReply = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:nil];
     NSString *theReply = [[NSString alloc] initWithBytes:[POSTReply bytes] length:[POSTReply length] encoding: NSASCIIStringEncoding];
-    //NSLog(@"Reply: %@", theReply);
+    // NSLog(@"Reply: %@", theReply);
 }
 
 @end

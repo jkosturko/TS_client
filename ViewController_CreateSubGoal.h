@@ -15,7 +15,9 @@
 
 @property (strong, nonatomic) id detailItem;
 @property (strong, nonatomic) id userItem;
+@property (strong, nonatomic) id parentID;
 @property (strong, nonatomic) IBOutlet UITextField *textFieldTargetDate;
+@property (strong, nonatomic) IBOutlet UITextField *textFieldCategory;
 
 - (IBAction)pushSave:(UIBarButtonItem *)sender;
 - (IBAction)pushCancel:(UIBarButtonItem *)sender;
