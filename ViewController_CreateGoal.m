@@ -5,9 +5,8 @@
 //  Created by Kosturko, Jessica on 3/2/13.
 //  Copyright (c) 2013 Kosturko, Jessica. All rights reserved.
 //
-//#define _POSTURL @"http://tsdev.spielly.com/goals.json"
-#define _POSTURL @"http://ts.spielly.com/goals.json"
-#define _PUTURL @"http://ts.spielly.com/goals/1.json"
+#define _POSTURL @"http://tsdev.spielly.com/goals.json"
+#define _PUTURL @"http://tsdev.spielly.com/goals/1.json"
 
 
 #import "ViewController_CreateGoal.h"
@@ -99,7 +98,7 @@
 #pragma mark - View Get Saved Goal from view
 - (IBAction)deleteGoal:(UIButton *)sender {
 
-  NSString *url = @"http://ts.spielly.com/goals/2.json";
+  NSString *url = @"http://tsdev.spielly.com/goals/2.json";
 //    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
 //    
 //    [request setURL:[NSURL URLWithString:url]];
@@ -148,7 +147,7 @@
 #pragma mark - Model - Post Data to JSON
 - (void)addGoal:(NSString *)goalName category:(NSString *)categoryName  {
     
-    NSString *post = [NSString stringWithFormat:@"[goal]description=%@&[goal]user_id=%@&[goal]category=%d&[goal]private=%@&[goal]target=%@", goalName,[_userItem objectForKey:@"id"], 1, @"false", @"2014-09-22"];
+    NSString *post = [NSString stringWithFormat:@"[goal]description=%@&[goal]user_id=%@&[goal]category_id=%d&[goal]private=%@&[goal]target=%@", goalName,[_userItem objectForKey:@"id"], 1, @"false", @"2014-09-22"];
     NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
     NSString *postLength = [NSString stringWithFormat:@"%d", [postData length]];
     
@@ -162,7 +161,7 @@
     NSURLResponse *response;
     NSData *POSTReply = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:nil];
     NSString *theReply = [[NSString alloc] initWithBytes:[POSTReply bytes] length:[POSTReply length] encoding: NSASCIIStringEncoding];
-    // NSLog(@"Reply: %@", theReply);
+     NSLog(@"Reply: %@, request %@, post %@", theReply, request, post);
 }
 
 
@@ -170,7 +169,7 @@
 - (void)updateGoal:(NSString *)goalName category:(NSString *)categoryName  {
     NSLog(@"Got to update/modify %@", goalName);
     
-    NSString *post = [NSString stringWithFormat:@"[goal]description=%@&[goal]user_id=%@&[goal]category=%@&[goal]target=%@", goalName,[_userItem objectForKey:@"id"], categoryName, @"2011-09-22"];
+    NSString *post = [NSString stringWithFormat:@"[goal]description=%@&[goal]user_id=%@&[goal]category_id=%@&[goal]target=%@", goalName,[_userItem objectForKey:@"id"], categoryName, @"2011-09-22"];
     NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
     NSString *postLength = [NSString stringWithFormat:@"%d", [postData length]];
     

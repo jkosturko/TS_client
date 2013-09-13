@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ViewController_SingleGoalView : UIViewController{
+@interface ViewController_SingleGoalView : UIViewController <UITableViewDataSource, UITableViewDelegate> {
     NSMutableArray *mySubGoals;
 }
 

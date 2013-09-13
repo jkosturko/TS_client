@@ -7,9 +7,9 @@
 //
 
 
-#define _GETURL @"http://ts.spielly.com/"
+#define _GETURL @"http://tsdev.spielly.com/"
 #define _TAGGOALTITLE 10
-#define _PUTURL @"http://ts.spielly.com/"
+#define _PUTURL @"http://tsdev.spielly.com/"
 #define _SEGUETOMODIFYGOAL @"modifySubGoal"
 
 #import "ViewController_SingleGoalView.h"
@@ -32,7 +32,7 @@
 {
     if (_userItem != userItem) {
         _userItem = userItem;
-        
+    
         // Update the view.
         [self configureView];
     }
@@ -42,7 +42,7 @@
 {
     if (_detailItem != newDetailItem) {
         _detailItem = newDetailItem;
-
+        
         [self setGoalID: _detailItem];
         
         // Update the view.
@@ -71,7 +71,8 @@
     [self configureView];
     
     mySubGoals = [[NSMutableArray alloc] initWithArray:[self getSubGoals]];
-    self.navigationItem.rightBarButtonItem = [self editButtonItem];
+//    self.navigationItem.rightBarButtonItem = [self editButtonItem];
+    //adding comment for diff
 }
 
 -(void)viewWillAppear:(BOOL)animated {
@@ -94,19 +95,20 @@
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
        Cell_GoalDetail *cell = [tableView dequeueReusableCellWithIdentifier:@"cellDetail" forIndexPath:indexPath];
-    
-    //Strikethrough title if complete
-    if ([[mySubGoals objectAtIndex:indexPath.row] objectForKey:@"completion"] != [NSNull null]) {
-        cell.mySubGoalTitle.attributedText =  [self updateStrikeThrough:[[mySubGoals objectAtIndex:indexPath.row] objectForKey:@"description"] add:YES];
+ 
+    if (mySubGoals.count > 0 ) {
+        //Strikethrough title if complete
+        if ([[mySubGoals objectAtIndex:indexPath.row] objectForKey:@"completion"] != [NSNull null]) {
+            cell.mySubGoalTitle.attributedText =  [self updateStrikeThrough:[[mySubGoals objectAtIndex:indexPath.row] objectForKey:@"description"] add:YES];
+        }
+        else {
+            cell.mySubGoalTitle.text = [[[mySubGoals objectAtIndex:indexPath.row] objectForKey:@"description"] capitalizedString];
+        }
+        
+        // Here we use the new provided setImageWithURL: method to load the web image
+        cell.activityName.text = [[mySubGoals objectAtIndex:indexPath.row] objectForKey:@"description"];
+        cell.labelGoalId.text = [NSString stringWithFormat:@"%@",[[mySubGoals objectAtIndex:indexPath.row] objectForKey:@"id"] ];
     }
-    else {
-        cell.mySubGoalTitle.text = [[[mySubGoals objectAtIndex:indexPath.row] objectForKey:@"description"] capitalizedString];
-    }
-    
-    // Here we use the new provided setImageWithURL: method to load the web image
-    cell.activityName.text = [[mySubGoals objectAtIndex:indexPath.row] objectForKey:@"description"];
-    cell.labelGoalId.text = [NSString stringWithFormat:@"%@",[[mySubGoals objectAtIndex:indexPath.row] objectForKey:@"id"] ];
-    
     return cell;
 }
 
@@ -121,9 +123,11 @@
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     // If row is deleted, remove it from the list.
     if (editingStyle == UITableViewCellEditingStyleDelete) {
+        if (mySubGoals.count > 0 ) {
         [self deleteGoal:[[mySubGoals objectAtIndex:indexPath.row] objectForKey:@"id"]]; //This shouldn't go here because I am mixing logic with data with view - temporary for now
         [mySubGoals removeObjectAtIndex:indexPath.row];
         [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:YES];
+        }
     }
 }
 
@@ -132,11 +136,7 @@
         [[segue destinationViewController] setDetailItem:self.detailItem];
     }
     if ([[segue identifier] isEqualToString:@"newSubGoal"]) {
-        NSIndexPath *indexPath = [self.tableViewSubGoals indexPathForSelectedRow];
-        NSDate *object = mySubGoals[indexPath.row];
-        [[segue destinationViewController] setParentID:[object valueForKey:@"parent_id"]];
-        
-        //[[segue destinationViewController] setDetailItem:goalId];
+        [[segue destinationViewController] setParentID:goalId];
         [[segue destinationViewController] setUserItem:_userItem];
     }
     

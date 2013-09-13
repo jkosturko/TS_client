@@ -6,9 +6,8 @@
 //  Copyright (c) 2013 Kosturko, Jessica. All rights reserved.
 //
 
-//#define _POSTURL @"http://tsdev.spielly.com/goals.json"
-#define _POSTURL @"http://ts.spielly.com/goals/1/goals.json"
-#define _PUTURL @"http://ts.spielly.com/goals/1.json"
+//#define _POSTURL @"http://tsdev.spielly.com/goals/1/goals.json"
+//#define _PUTURL @"http://tsdev.spielly.com/goals/1.json"
 #import "ViewController_CreateSubGoal.h"
 #import "ViewController_SingleGoalView.h"
 
@@ -16,9 +15,9 @@
 - (void)configureView;
 @end
 
-NSString *parentId;
-
-@implementation ViewController_CreateSubGoal
+@implementation ViewController_CreateSubGoal {
+    NSArray *arrRequests;
+}
 
 #pragma mark - Managing the detail item
 
@@ -30,24 +29,29 @@ NSString *parentId;
         // Update the view.
         [self configureView];
     }
+        NSLog(@"mydetailitem Segue%@", _detailItem);
 }
 
 - (void)setParentId:(id)newParentId
 {
-    myNewSubGoal = [[NSMutableDictionary alloc] init];
-    if (parentId != newParentId) {
-        parentId = newParentId;
+    myNewSubGoal = [[NSMutableDictionary alloc] init]; //pretty sure this shouldn't go here
+    if (_parentID != newParentId) {
+        _parentID = newParentId;
         
         // Update the view.
         [self configureView];
     }
 }
 
+- (void)viewWillDisappear:(BOOL)animated {
+    //    [self.parentViewController.tableView reloadData];
+    NSLog(@"parent controller%@", self.parentViewController);
+
+}
+
 - (void)configureView
 {
     // Update the user interface for the detail item.
-    
-
     
 }
 
@@ -67,16 +71,30 @@ NSString *parentId;
     // Do any additional setup after loading the view.
     
     myDatePicker = [[UIDatePicker alloc]init];
+    pickerViewCategories = [[UIPickerView alloc] init];
+    pickerViewCategories.showsSelectionIndicator = YES;
+    pickerViewCategories.dataSource = self;
+    pickerViewCategories.delegate = self;
+//    [pickerViewCategories selectRow:1 inComponent:0 animated:YES];
+    self.textFieldCategory.inputView = pickerViewCategories;
+    
     
     if (self.detailItem) {
         myNewSubGoal = [[NSMutableDictionary alloc] init];
-        NSLog(@"%@self.detailItem", self.detailItem);
         
         //In Edit mode/ prepopulate categories
         _textFieldSubGoal.text = [NSString stringWithFormat:@"%@",[self.detailItem objectForKey:@"description"]];
         _textFieldTargetDate.text = [NSString stringWithFormat:@"%@",[self.detailItem objectForKey:@"target"]];
-        _textFieldCategory.text = [NSString stringWithFormat:@"%@",[self.detailItem objectForKey:@"category"]];
+        _textFieldCategory.text = [NSString stringWithFormat:@"%@",[[self.detailItem objectForKey:@"category"] objectForKey:@"name"]];
+        
+        if (![[self.detailItem objectForKey:@"completion"] isKindOfClass:[NSNull class]] ) {
+            [_boolGoalCompleted setOn:YES];
+        }
     }
+    
+    //Make a function for this -also not sure if we want to call this everytime the view loads
+    NSData *theData = [NSData dataWithContentsOfURL:[NSURL URLWithString:@"http://tsdev.spielly.com/categories.json"]];
+    arrRequests = [NSJSONSerialization JSONObjectWithData:theData options:NSJSONReadingMutableContainers error:nil];
 }
 
 - (void)didReceiveMemoryWarning
@@ -92,15 +110,13 @@ NSString *parentId;
 
     [self updateModelwithNewGoal];
     [self dismissViewControllerAnimated:YES completion:nil];
-    
+
 }
 
 #pragma mark - Controller: Update Model with New Goal
 - (void)updateModelwithNewGoal {
-    if (myNewSubGoal) {
-        NSLog(@"%@, %@",@"updating logic here", myNewSubGoal);
+    if (myNewSubGoal)
         [self updateGoal:[myNewSubGoal valueForKey:@"name"] category:[myNewSubGoal valueForKey:@"type"]];
-    }
     else
         [self addSubGoal:_textFieldSubGoal.text targetDate:_textFieldTargetDate.text];
 }
@@ -108,14 +124,15 @@ NSString *parentId;
 #pragma mark - Model - Post Data to JSON
 - (NSArray *)addSubGoal:(NSString *)goalName targetDate:(NSString *)targetDate {
     int categoryId = 1;
-    
-    //http://ts.spielly.com/goals.json?[goal]description=SubGoal1&[goal]category=cat1&[goal]parent_id=1&[goal]user_id=1
-    NSString *post = [NSString stringWithFormat:@"[goal]description=%@&[goal]user_id=%@&[goal]category=%d&[goal]parent_id=%@&[goal]target=%@", goalName,[_userItem objectForKey:@"id"], categoryId, parentId, targetDate];
+    NSString *private = @"true";
+    NSString *postURL = @"http://tsdev.spielly.com/goals.json";
+
+    NSString *post = [NSString stringWithFormat:@"[goal]description=%@&[goal]user_id=%@&[goal]category_id=%d&[goal]parent_id=%@&[goal]target=%@&[goal]private=%@", goalName,[_userItem objectForKey:@"id"], categoryId, _parentID, targetDate, private];
     NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
     NSString *postLength = [NSString stringWithFormat:@"%d", [postData length]];
     
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
-    [request setURL:[NSURL URLWithString:_POSTURL]];
+    [request setURL:[NSURL URLWithString:postURL]];
     [request setHTTPMethod:@"POST"];
     [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
     [request setValue:@"application/x-www-form-urlencoded;charset=UTF-8" forHTTPHeaderField:@"Content-Type"];
@@ -126,7 +143,7 @@ NSString *parentId;
     NSString *theReply = [[NSString alloc] initWithBytes:[POSTReply bytes] length:[POSTReply length] encoding: NSASCIIStringEncoding];
     NSArray *dataArray = [NSJSONSerialization JSONObjectWithData:POSTReply options:kNilOptions error:nil];
     
-    NSLog(@"%@,%@",post, _POSTURL);
+//    NSLog(@"add new subgoal%@,%@",post, postURL);
     return dataArray;
     
 }
@@ -163,14 +180,16 @@ NSString *parentId;
 
 #pragma mark - Model - HTTP PUT: Update Goal
 - (void)updateGoal:(NSString *)goalName category:(NSString *)categoryName  {
-    NSLog(@"Got to update/modify %@", goalName);
-    
+        NSLog(@"Detail item %@", _detailItem);
     NSString *goalDescription = [myNewSubGoal valueForKey:@"name"];
     NSString *category = [myNewSubGoal valueForKey:@"category"];
     NSString *targetDate = [myNewSubGoal valueForKey:@"date"];
     
-    NSString *url = [NSString stringWithFormat: @"http://ts.spielly.com/goals/%@.json", [self.detailItem objectForKey:@"id"]];
-    NSString *post = [NSString stringWithFormat:@"[goal]description=%@&[goal]category=%@&[goal]target=%@", goalDescription, category, targetDate];
+//    NSString *completion =(_boolGoalCompleted.isOn)
+    NSString *completion = [myNewSubGoal valueForKey:@"completion"];
+    
+    NSString *url = [NSString stringWithFormat: @"http://tsdev.spielly.com/goals/%@.json", [self.detailItem objectForKey:@"id"]];
+    NSString *post = [NSString stringWithFormat:@"[goal]description=%@&[goal]category_id=%@&[goal]target=%@&[goal]completion=%@", goalDescription, category, targetDate, completion];
     NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
     NSString *postLength = [NSString stringWithFormat:@"%d", [postData length]];
     
@@ -189,6 +208,46 @@ NSString *parentId;
     
     //Reset My new Goal
     myNewSubGoal = [[NSMutableDictionary alloc] init];
+}
+
+- (IBAction)switchGoalComplete:(UISwitch *)sender {
+    if (sender.isOn)
+        [myNewSubGoal setObject:[self getDatetoString:[NSDate date]] forKey:@"completion"];
+    else
+        [myNewSubGoal setObject:[NSNull class] forKey:@"completion"];
+}
+
+-(NSString *)getDatetoString:(NSDate *)myDate  {
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    NSTimeZone *timeZone = [NSTimeZone timeZoneWithName:@"UTC"];
+    
+    [dateFormatter setDateFormat:@"yyyy-MM-ddTHH:mm:ssZ"];
+    [dateFormatter setTimeZone:timeZone];
+    NSString *dateString = [dateFormatter stringFromDate:myDate];
+    return dateString;
+}
+
+
+//UIPickerView
+
+// returns the number of 'columns' to display.
+- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView {
+    return 1;
+}
+
+// returns the # of rows in each component..
+- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component {
+    return 3;
+}
+
+- (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component {
+            [pickerView selectRow:2 inComponent:0 animated:YES];
+    return [[arrRequests objectAtIndex:row] objectForKey:@"name"];
+
+}
+
+- (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {
+    self.textFieldCategory.text = [[arrRequests objectAtIndex:row] objectForKey:@"name"];
 }
 
 @end

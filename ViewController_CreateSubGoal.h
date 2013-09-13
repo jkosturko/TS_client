@@ -8,11 +8,15 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ViewController_CreateSubGoal : UIViewController<UITextFieldDelegate> {
+@interface ViewController_CreateSubGoal : UIViewController <UITextFieldDelegate, UIPickerViewDataSource, UIPickerViewDelegate> {
         NSMutableDictionary *myNewSubGoal;
         UIDatePicker *myDatePicker;
+        UIPickerView *pickerViewCategories;
 }
 
+- (IBAction)switchGoalComplete:(UISwitch *)sender;
+
+@property (strong, nonatomic) IBOutlet UISwitch *boolGoalCompleted;
 @property (strong, nonatomic) id detailItem;
 @property (strong, nonatomic) id userItem;
 @property (strong, nonatomic) id parentID;

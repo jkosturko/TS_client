@@ -13,6 +13,7 @@
 		4C0A89EE17CC548100E266AF /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4C0A89ED17CC548100E266AF /* libz.dylib */; };
 		4C65CD4017BBC1CF00BB33CA /* deleteios.png in Resources */ = {isa = PBXBuildFile; fileRef = 4C65CD3F17BBC1CF00BB33CA /* deleteios.png */; };
 		4C834D8717230BB600BCF9BE /* ViewController_CreateSubGoal.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C834D8617230BB600BCF9BE /* ViewController_CreateSubGoal.m */; };
+		4C87E44717D76AB9004583E4 /* ProfilePic.png in Resources */ = {isa = PBXBuildFile; fileRef = 4C87E43E17D76AB9004583E4 /* ProfilePic.png */; };
 		4CAEC32B1783B2490088367E /* results.png in Resources */ = {isa = PBXBuildFile; fileRef = 4CAEC32A1783B2490088367E /* results.png */; };
 		4CAEC32D1783B3900088367E /* actions.png in Resources */ = {isa = PBXBuildFile; fileRef = 4CAEC32C1783B38F0088367E /* actions.png */; };
 		4CAEC32F1783B44B0088367E /* goals.png in Resources */ = {isa = PBXBuildFile; fileRef = 4CAEC32E1783B44B0088367E /* goals.png */; };
@@ -70,6 +71,7 @@
 		4C65CD3F17BBC1CF00BB33CA /* deleteios.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = deleteios.png; sourceTree = "<group>"; };
 		4C834D8517230BB600BCF9BE /* ViewController_CreateSubGoal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ViewController_CreateSubGoal.h; path = ../ViewController_CreateSubGoal.h; sourceTree = "<group>"; };
 		4C834D8617230BB600BCF9BE /* ViewController_CreateSubGoal.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ViewController_CreateSubGoal.m; path = ../ViewController_CreateSubGoal.m; sourceTree = "<group>"; };
+		4C87E43E17D76AB9004583E4 /* ProfilePic.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ProfilePic.png; sourceTree = "<group>"; };
 		4CAEC329178392340088367E /* thriveconnect.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = thriveconnect.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4CAEC32A1783B2490088367E /* results.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = results.png; sourceTree = "<group>"; };
 		4CAEC32C1783B38F0088367E /* actions.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = actions.png; sourceTree = "<group>"; };
@@ -253,6 +255,7 @@
 		5FC5406816E039D500BE1AF9 /* images */ = {
 			isa = PBXGroup;
 			children = (
+				4C87E43E17D76AB9004583E4 /* ProfilePic.png */,
 				4C65CD3F17BBC1CF00BB33CA /* deleteios.png */,
 				4CAECC2A1783BC2D0088367E /* settings.png */,
 				4CAECC281783BA160088367E /* running-01-80x80.png */,
@@ -422,6 +425,7 @@
 				4C65CD4017BBC1CF00BB33CA /* deleteios.png in Resources */,
 				4C0A89EB17CC526000E266AF /* README.md in Resources */,
 				4C0A89EC17CC526000E266AF /* release_notes.md in Resources */,
+				4C87E44717D76AB9004583E4 /* ProfilePic.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

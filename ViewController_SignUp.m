@@ -6,7 +6,7 @@
 //  Copyright (c) 2013 Kosturko, Jessica. All rights reserved.
 //
 
-#define _POSTURL @"http://ts.spielly.com/users.json"
+#define _POSTURL @"http://tsdev.spielly.com/users.json"
 #define _SEGUETOPROFILE @"newUserSuccess"
 #define _MAINCONTROLLER @"SCViewController"
 #import "ViewController_SignUp.h"
