@@ -494,6 +494,8 @@ NSArray *myGoalPoints;
         NSIndexPath *indexPath = [self.goalTableView indexPathForSelectedRow];
         NSDate *object = myGoals[indexPath.row];
         [[segue destinationViewController] setDetailItem:object];
+        [[segue destinationViewController] setUserItem:_userItem];
+                    NSLog(@"useritem2 %@", _userItem);
     }
     
 }

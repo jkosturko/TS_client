@@ -138,6 +138,7 @@
 
 #pragma mark - Controller: Update Model with New Goal
 - (void)updateModelwithNewGoal {
+    NSLog(@"updateModelWithNew Goal %@", [myNewGoal objectForKey:@"id"]);
     if ([myNewGoal objectForKey:@"id"])
         [self updateGoal:[myNewGoal valueForKey:@"name"] category:[myNewGoal valueForKey:@"type"]];
     else
@@ -146,7 +147,6 @@
 
 #pragma mark - Model - Post Data to JSON
 - (void)addGoal:(NSString *)goalName category:(NSString *)categoryName  {
-    
     NSString *post = [NSString stringWithFormat:@"[goal]description=%@&[goal]user_id=%@&[goal]category_id=%d&[goal]private=%@&[goal]target=%@", goalName,[_userItem objectForKey:@"id"], 1, @"false", @"2014-09-22"];
     NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
     NSString *postLength = [NSString stringWithFormat:@"%d", [postData length]];
@@ -167,14 +167,14 @@
 
 #pragma mark - Model - HTTP PUT: Update Goal
 - (void)updateGoal:(NSString *)goalName category:(NSString *)categoryName  {
-    NSLog(@"Got to update/modify %@", goalName);
     
+    NSString *url = [NSString stringWithFormat: @"http://tsdev.spielly.com/goals/%@.json", [self.detailItem objectForKey:@"id"]];
     NSString *post = [NSString stringWithFormat:@"[goal]description=%@&[goal]user_id=%@&[goal]category_id=%@&[goal]target=%@", goalName,[_userItem objectForKey:@"id"], categoryName, @"2011-09-22"];
     NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
     NSString *postLength = [NSString stringWithFormat:@"%d", [postData length]];
     
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
-    [request setURL:[NSURL URLWithString:_PUTURL]];
+    [request setURL:[NSURL URLWithString:url]];
     [request setHTTPMethod:@"PUT"];
     [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
     [request setValue:@"application/x-www-form-urlencoded;charset=UTF-8" forHTTPHeaderField:@"Content-Type"];
@@ -183,7 +183,7 @@
     NSURLResponse *response;
     NSData *POSTReply = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:nil];
     NSString *theReply = [[NSString alloc] initWithBytes:[POSTReply bytes] length:[POSTReply length] encoding: NSASCIIStringEncoding];
-    // NSLog(@"Reply: %@", theReply);
+    //NSLog(@"url: %@, Post: %@", url, post);
 }
 
 @end
